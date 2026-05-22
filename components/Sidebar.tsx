@@ -45,7 +45,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onWYIdSubmit }) => {
       <nav>
         <ul>
           <li><Link href="/">Home</Link></li>
-          <li><Link href="/cow">Cow I_U_merge</Link></li>
+          <li><Link href="/tenday">Ten-Day Records</Link></li>
+          <li><Link href="/cow">Individual Cow</Link></li>
         </ul>
       </nav>
       {/* WY_id input form */}

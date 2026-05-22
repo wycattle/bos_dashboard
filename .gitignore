@@ -8,7 +8,6 @@
 # Production builds
 /.next/
 /out/
-*.md
 /build
 
 
@@ -29,12 +28,10 @@ yarn-error.log*
 .vercel
 *.tsbuildinfo
 next-env.d.ts
-README.md
 secret.txt
 launch.json
 
 tree.txt
-*.mjs
 *.ico
 
 
