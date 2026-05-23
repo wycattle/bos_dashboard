@@ -1,7 +1,8 @@
 "use client";
 
 import React, { Suspense, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 const API_BASE_URL = 'http://127.0.0.1:8000';
 
@@ -25,6 +26,9 @@ type IUMergeResult = {
  */
 const CowPageContent = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  // State for the WY_id input field
+  const [inputValue, setInputValue] = useState('');
   // State for the current WY_id
   const [wyId, setWyId] = useState<string | null>(null);
   // State for the fetched I_U_merge result
@@ -38,10 +42,13 @@ const CowPageContent = () => {
     ? Object.keys(result.rows[0])
     : [];
 
-  /**
-   * Fetches I_U_merge results for a given WY_id.
-   * @param {string} id - The WY_id to fetch results for.
-   */
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (inputValue.trim()) {
+      router.push(`/cow?wyId=${encodeURIComponent(inputValue.trim())}`);
+    }
+  };
+
   const fetchIUMerge = async (id: string) => {
     setLoading(true);
     setError(null);
@@ -84,7 +91,20 @@ const CowPageContent = () => {
 
   return (
       <main className="app-main">
-        <h1 className="page-title">I_U_merge Results</h1>
+        <Link href="/" style={{ display: "inline-block", marginBottom: "1rem", fontSize: "0.9em" }}>← Back to Homepage</Link>
+        <h1 className="page-title">Individual Cow</h1>
+        {/* WY_id input form */}
+        <form onSubmit={handleSubmit} style={{ marginBottom: "1.5rem", display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          <label htmlFor="wyId" className="form-label">WY_id:</label>
+          <input
+            id="wyId"
+            type="text"
+            value={inputValue}
+            onChange={e => setInputValue(e.target.value)}
+            className="text-input"
+          />
+          <button type="submit" className="primary-button">Submit</button>
+        </form>
         {/* Show current WY_id */}
         {wyId && <p className="page-meta">Showing results for WY_id: <b>{wyId}</b></p>}
         {/* Loading state */}

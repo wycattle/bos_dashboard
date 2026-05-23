@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 
 interface TendayRow {
   wy_id: string;
@@ -63,6 +64,7 @@ export default function TendayPage() {
 
   return (
     <div style={{ padding: "1.5rem" }}>
+      <Link href="/" style={{ display: "inline-block", marginBottom: "1rem", fontSize: "0.9em" }}>← Back to Homepage</Link>
       <h1 style={{ marginBottom: "1rem" }}>Ten-Day Milk Records</h1>
       <div style={{ overflowX: "auto" }}>
         <table className="data-table">

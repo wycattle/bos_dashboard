@@ -6,10 +6,10 @@ const modules = [
   { href: "/cow", label: "Individual Cow", description: "Look up data for a specific animal by WY ID." },
 ];
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div style={{ padding: "2rem" }}>
-      <h1 style={{ marginBottom: "0.5rem" }}>BOS Dashboard</h1>
+      <h1 style={{ marginBottom: "0.5rem", textAlign: "center" }}>BOS Dashboard</h1>
       <p style={{ marginBottom: "2rem", color: "var(--muted-foreground)" }}>
         Select a module to get started.
       </p>
