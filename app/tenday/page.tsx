@@ -1,5 +1,9 @@
+/**
+ * app/tenday/page.tsx
+ * Ten-Day Milk Records page for BOS Dashboard
+ */
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 
 interface TendayRow {
@@ -14,9 +18,9 @@ type SortKey = keyof Omit<TendayRow, "dates">;
 type SortDir = "asc" | "desc";
 
 export default function TendayPage() {
-  const [rows, setRows] = useState<TendayRow[]>([]);
+  const [rows, setRows]       = useState<TendayRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError]     = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("run_date");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
 
@@ -48,6 +52,7 @@ export default function TendayPage() {
     [sortKey]
   );
 
+
   const sorted = [...rows].sort((a, b) => {
     const av = a[sortKey] ?? "";
     const bv = b[sortKey] ?? "";
@@ -55,6 +60,25 @@ export default function TendayPage() {
     if (av > bv) return sortDir === "asc" ? 1 : -1;
     return 0;
   });
+
+  // Collect all unique dates across all rows, sorted ascending
+  const allDates = useMemo(() => {
+    const dateSet = new Set<string>();
+    rows.forEach(row => {
+      if (row.dates) {
+        Object.keys(row.dates).forEach(date => {
+          // Try to format as YYYY-MM-DD
+          const parsed = new Date(date);
+          let formatted = date;
+          if (!isNaN(parsed.getTime())) {
+            formatted = parsed.toISOString().slice(0, 10);
+          }
+          dateSet.add(formatted);
+        });
+      }
+    });
+    return Array.from(dateSet).sort();
+  }, [rows]);
 
   const arrow = (key: SortKey) =>
     sortKey === key ? (sortDir === "asc" ? " ▲" : " ▼") : "";
@@ -70,48 +94,90 @@ export default function TendayPage() {
         <table className="data-table">
           <thead>
             <tr>
-              {(
-                [
-                  ["wy_id", "WY ID"],
-                  ["run_date", "Run Date"],
-                  ["average", "Average"],
-                  ["dev_from_avg", "Dev from Avg"],
-                ] as [SortKey, string][]
-              ).map(([key, label]) => (
-                <th
-                  key={key}
-                  onClick={() => handleSort(key)}
-                  style={{ cursor: "pointer", userSelect: "none" }}
-                >
-                  {label}
-                  {arrow(key)}
-                </th>
-              ))}
-              <th>Dates (date → liters)</th>
+              <th
+                onClick={() => handleSort("wy_id")}
+                style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}
+              >
+                WY ID{arrow("wy_id")}
+              </th>
+              <th
+                onClick={() => handleSort("run_date")}
+                style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}
+              >
+                Run Date{arrow("run_date")}
+              </th>
+              {allDates.length > 0 && (
+                <th colSpan={allDates.length} style={{ textAlign: "center" }}>Dates (date → liters)</th>
+              )}
+              <th
+                onClick={() => handleSort("average")}
+                style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}
+              >
+                Average{arrow("average")}
+              </th>
+              <th
+                onClick={() => handleSort("dev_from_avg")}
+                style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}
+              >
+                Dev from Avg{arrow("dev_from_avg")}
+              </th>
             </tr>
+            {allDates.length > 0 && (
+              <tr>
+                <th></th>
+                <th></th>
+                {allDates.map((date, idx) => {
+                  // Format as MM-DD
+                  let mmdd = date;
+                  if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+                    mmdd = date.slice(5, 10);
+                  } else {
+                    // Try to parse
+                    const parsed = new Date(date);
+                    if (!isNaN(parsed.getTime())) {
+                      mmdd = (parsed.getMonth() + 1).toString().padStart(2, '0') + '-' + parsed.getDate().toString().padStart(2, '0');
+                    }
+                  }
+                  return (
+                    <th key={"alldate-" + idx} style={{ textAlign: "right" }}>{mmdd}</th>
+                  );
+                })}
+                <th></th>
+                <th></th>
+              </tr>
+            )}
           </thead>
           <tbody>
             {sorted.map((row, i) => (
               <tr key={i}>
-                <td>{row.wy_id}</td>
-                <td>{row.run_date ? new Date(row.run_date).toLocaleDateString() : "—"}</td>
-                <td>{row.average != null ? Number(row.average).toFixed(2) : "—"}</td>
-                <td>{row.dev_from_avg != null ? Number(row.dev_from_avg).toFixed(2) : "—"}</td>
-                <td>
-                  <details>
-                    <summary style={{ cursor: "pointer" }}>
-                      {row.dates ? Object.keys(row.dates).length : 0} entries
-                    </summary>
-                    <ul style={{ margin: "0.25rem 0", paddingLeft: "1.2rem", fontSize: "0.85em" }}>
-                      {row.dates &&
-                        Object.entries(row.dates).map(([date, liters]) => (
-                          <li key={date}>
-                            {date}: {liters}
-                          </li>
-                        ))}
-                    </ul>
-                  </details>
-                </td>
+                <td style={{ textAlign: "center" }}>{row.wy_id}</td>
+                <td style={{ textAlign: "center" }}>{row.run_date ? new Date(row.run_date).toLocaleDateString() : "—"}</td>
+                {allDates.map((date, idx) => {
+                  // Find the liters for this date in this row
+                  let liters = "";
+                  if (row.dates) {
+                    // Try both formatted and raw keys
+                    if (row.dates[date] !== undefined) {
+                      liters = String(row.dates[date]);
+                    } else {
+                      // Try to match by parsing all keys
+                      for (const [k, v] of Object.entries(row.dates)) {
+                        const parsed = new Date(k);
+                        let formatted = k;
+                        if (!isNaN(parsed.getTime())) {
+                          formatted = parsed.toISOString().slice(0, 10);
+                        }
+                        if (formatted === date) {
+                          liters = String(v);
+                          break;
+                        }
+                      }
+                    }
+                  }
+                  return <td key={"liters-" + idx} style={{ textAlign: "right" }}>{liters || "—"}</td>;
+                })}
+                <td style={{ textAlign: "center" }}>{row.average != null ? Number(row.average).toFixed(2) : "—"}</td>
+                <td style={{ textAlign: "center" }}>{row.dev_from_avg != null ? Number(row.dev_from_avg).toFixed(2) : "—"}</td>
               </tr>
             ))}
           </tbody>

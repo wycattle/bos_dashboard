@@ -1,8 +1,12 @@
+/**
+ * app/page.tsx
+ * Home page for BOS Dashboard
+ */
 import Link from "next/link";
 
 const modules = [
-  { href: "/tenday", label: "Ten-Day Records", description: "View and sort ten-day milk production data." },
-  { href: "/aggregate", label: "Aggregate Data", description: "Summary statistics across the herd." },
+  { href: "/dailydata", label: "Daily Data", description: "Access ten-day, half-day, and group milk production records." },
+  { href: "/aggregates", label: "Aggregate Data", description: "Summary statistics across the herd." },
   { href: "/cow", label: "Individual Cow", description: "Look up data for a specific animal by WY ID." },
 ];
 
