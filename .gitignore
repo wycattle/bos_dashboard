@@ -3,12 +3,16 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
-
+io
+json
+os
+psycopg2
+requests
 /coverage
+
 # Production builds
 /.next/
 /out/
-*.md
 /build
 
 
@@ -23,18 +27,17 @@ yarn-error.log*
 
 # Env vars
 .env
-.env*.local
-
+.local.env*
+.venv/
+credentials.json
 
 .vercel
 *.tsbuildinfo
 next-env.d.ts
-README.md
 secret.txt
 launch.json
 
 tree.txt
-*.mjs
 *.ico
 
 
