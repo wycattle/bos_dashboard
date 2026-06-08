@@ -5,6 +5,7 @@
 "use client";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
+import { sortRows } from "@/utils/sortRows";
 
 
 interface HalfdayRow {
@@ -66,8 +67,15 @@ export default function HalfdayPage() {
   if (error) return <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>;
 
   return (
-    <div style={{ padding: "1.5rem" }}>
-      <Link href="/" style={{ display: "inline-block", marginBottom: "1rem", fontSize: "0.9em" }}>← Back to Homepage</Link>
+      <div style={{ 
+        padding: "1.5rem", 
+        maxWidth: "400px",        // Limits width (adjust as needed: 600px, 900px, etc.)
+        margin: "0 auto",         // Centers the container horizontally
+        width: "100%",             // Ensures it fills available space on small screens
+      }}>
+      <Link href="/" style={{ display: "inline-block", marginBottom: "1rem", fontSize: "0.9em", marginRight: "1em" }}>← Back to Homepage</Link>
+      <Link href="/dailydata" style={{ display: "inline-block", marginBottom: "1rem", fontSize: "0.9em" }}>← Back to Daily Data</Link>
+
       <h1 style={{ marginBottom: "1rem" }}>Half-Day Milk Records</h1>
       <div style={{ overflowX: "auto" }}>
         <table className="data-table">

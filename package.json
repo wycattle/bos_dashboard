@@ -9,29 +9,25 @@
     "lint": "eslint",
     "dev:all": "concurrently \"cd ../../bos && python server.py\" \"next dev\""
   },
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "dependencies": {
-<<<<<<< HEAD
-    "next": "16.2.1",
-    "pandas": "^0.0.3",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "uvicorn": "^0.0.1-security"
-=======
     "@neondatabase/serverless": "^1.1.0",
-    "next": "^16.2.6",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "next": "^16.2.7",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "swr": "^2.4.1"
->>>>>>> 2f10e8e56b7a41b199a309621ad27a854cb0e711
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "babel-plugin-react-compiler": "1.0.0",
+    "babel-plugin-react-compiler": "^1.0.0",
     "concurrently": "^9.2.1",
     "eslint": "^9",
-    "eslint-config-next": "16.2.1",
+    "eslint-config-next": "^16.2.1",
+    "postcss": "^8.5.10",
     "typescript": "^5"
   }
 }

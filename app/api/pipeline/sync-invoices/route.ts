@@ -53,7 +53,7 @@ async function fetchAllBaserowInvoicePages(): Promise<BaserowFeedInvoiceRecord[]
     `${BASEROW_API_BASE_URL}/${BASEROW_FEED_INVOICES_TABLE_ID}/?user_field_names=true&size=200`;
 
   while (next_page_url !== null) {
-    const baserow_page_response = await fetch(next_page_url, {
+    const baserow_page_response: Response = await fetch(next_page_url, {
       headers: baserow_auth_headers,
     });
 

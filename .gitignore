@@ -27,7 +27,7 @@ yarn-error.log*
 
 # Env vars
 .env
-.local.env*
+.env.local*
 .venv/
 credentials.json
 

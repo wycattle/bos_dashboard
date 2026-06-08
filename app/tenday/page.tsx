@@ -5,6 +5,7 @@
 "use client";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
+import { sortRows } from "@/utils/sortRows";
 
 interface TendayRow {
   wy_id: string;
@@ -53,13 +54,7 @@ export default function TendayPage() {
   );
 
 
-  const sorted = [...rows].sort((a, b) => {
-    const av = a[sortKey] ?? "";
-    const bv = b[sortKey] ?? "";
-    if (av < bv) return sortDir === "asc" ? -1 : 1;
-    if (av > bv) return sortDir === "asc" ? 1 : -1;
-    return 0;
-  });
+  const sorted = sortRows(rows, sortKey, sortDir);
 
   // Collect all unique dates across all rows, sorted ascending
   const allDates = useMemo(() => {
@@ -87,8 +82,14 @@ export default function TendayPage() {
   if (error) return <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>;
 
   return (
-    <div style={{ padding: "1.5rem" }}>
-      <Link href="/" style={{ display: "inline-block", marginBottom: "1rem", fontSize: "0.9em" }}>← Back to Homepage</Link>
+      <div style={{ 
+        padding: "1.5rem", 
+        maxWidth: "900px",        // Limits width (adjust as needed: 600px, 900px, etc.)
+        margin: "0 auto",         // Centers the container horizontally
+        width: "100%"             // Ensures it fills available space on small screens
+      }}>
+      <Link href="/" style={{ display: "inline-block", marginBottom: "1rem", fontSize: "0.9em", marginRight: "1.5rem" }}>← Back to Homepage  </Link>
+      <Link href="/dailydata" style={{ display: "inline-block", marginBottom: "1rem", fontSize: "0.9em" }}>← Back to Daily Data</Link>
       <h1 style={{ marginBottom: "1rem" }}>Ten-Day Milk Records</h1>
       <div style={{ overflowX: "auto" }}>
         <table className="data-table">
@@ -176,7 +177,7 @@ export default function TendayPage() {
                   }
                   return <td key={"liters-" + idx} style={{ textAlign: "right" }}>{liters || "—"}</td>;
                 })}
-                <td style={{ textAlign: "center" }}>{row.average != null ? Number(row.average).toFixed(2) : "—"}</td>
+                <td style={{ textAlign: "center" }}>{row.average != null ? Number(row.average).toFixed(1) : "—"}</td>
                 <td style={{ textAlign: "center" }}>{row.dev_from_avg != null ? Number(row.dev_from_avg).toFixed(2) : "—"}</td>
               </tr>
             ))}
