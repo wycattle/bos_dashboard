@@ -1,9 +1,76 @@
 {
-    "python-envs.pythonProjects": [
-        {
-            "path": ".",
-            "envManager": "ms-python.python:venv",
-            "packageManager": "ms-python.python:pip"
-        }
-    ]
+  // --- CRITICAL: Completely Disable Python & Data Science Stack ---
+  // Disables the main Python extension
+  "ms-python.python.enable": false,
+  // Disables Pylance (Language Server)
+  "ms-python.pylance.enable": false,
+  // Disables Jupyter Extension (Required for Data Wrangler/Notebooks)
+  "ms-toolsai.jupyter.enable": false,
+  // Disables Data Wrangler Extension
+  "ms-toolsai.datawrangler.enable": false,
+  // Disables Debugpy (Python Debugger)
+  "ms-python.debugpy.enable": false,
+
+  // --- Python Tooling & Linting (Hard Disable) ---
+  "python.linting.enabled": false,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": false,
+  "python.linting.mypyEnabled": false,
+  "python.languageServer": "None",
+  "python.analysis.ignore": ["*"],
+  "python.analysis.exclude": ["**"],
+  "python.defaultInterpreterPath": "",
+
+  // --- Jupyter & Data Science Specifics ---
+  "jupyter.disableJupyterAutoStart": true,
+  "jupyter.showVariableViewWhenDebugging": false,
+  "datawrangler.enabled": false,
+  "python-envs.terminal.autoActivationType": "off",
+  "python.terminal.activateEnvironment": false,
+  "python.terminal.activateEnvInCurrentTerminal": false,
+
+  // --- Editor Behavior for Node.js/Next.js ---
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+
+  // --- JavaScript/TypeScript Specifics ---
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // --- Files to Exclude (Hide Python/Env artifacts) ---
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/venv": true,
+    "**/.venv": true,
+    "**/env": true,
+    "**/*.pyc": true,
+    "**/__pycache__": true
+  },
+
+  // --- Next.js Specific (Optional) ---
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
 }

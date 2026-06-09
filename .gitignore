@@ -49,7 +49,7 @@ lib/mydb.sqlite
 *.code-workspace
 *.vs/
 
-
+package-lock.json
 sqlite.session.sql
 
 
