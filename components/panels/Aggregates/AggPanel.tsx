@@ -1,9 +1,7 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import TendayTable from "./daily/TendayTable";
-import HalfdayTable from "./daily/HalfdayTable";
-import GroupsTable from "./daily/GroupsTable";
+import AllxTable from "./AllxTable";
 
 export default function DailyPanel() {
   const router = useRouter();
@@ -56,27 +54,20 @@ export default function DailyPanel() {
           paddingTop: "4.0rem", //vert space from Home button
         }}
       >
-        <TendayTable />
+        <AllxTable />
       </div>
 
       {/* Bottom half: two columns side by side */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "320px 320px",
+          gridTemplateColumns: "900px",
           gap: "5rem", //<-horiz gap betw panels
           justifyContent: "start", // ← anchor to left
           overflow: "hidden",
           minHeight: 0,
         }}
-      >
-        <div style={{ overflow: "auto", minHeight: 0 }}>
-          <HalfdayTable />
-        </div>
-        <div style={{ overflow: "auto", minHeight: 0 }}>
-          <GroupsTable />
-        </div>
-      </div>
+      ></div>
     </div>
   );
 }

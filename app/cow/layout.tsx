@@ -1,4 +1,3 @@
-
 /**
  * WY_Layout provides a persistent input bar for WY_id at the top of all /cow pages.
  *
@@ -10,10 +9,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { WyIdProvider, useWyId } from "./WyIdContext";
+import { WyIdProvider, useWyId } from "../../components/panels/Cow/WyIdContext";
 import { usePathname, useRouter } from "next/navigation";
-
-
 
 const WyIdInputBar = () => {
   const { wyId, setWyId } = useWyId();
@@ -113,7 +110,6 @@ const WyIdInputBar = () => {
     </div>
   );
 };
-
 
 export default function WY_Layout({ children }: { children: React.ReactNode }) {
   return (

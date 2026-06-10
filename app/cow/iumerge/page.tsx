@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { useWyId } from "../WyIdContext";
+import { useWyId } from "../../../components/panels/Cow/WyIdContext";
 
 type IuMergeRow = {
   id: number;
@@ -16,13 +16,13 @@ type IuMergeRow = {
 };
 
 const COLUMNS: { key: keyof IuMergeRow; label: string }[] = [
-  { key: "datex",      label: "Date"       },
-  { key: "typex",      label: "Type"       },
-  { key: "i_calf_num", label: "I Calf #"   },
-  { key: "u_calf_num", label: "U Calf #"   },
-  { key: "stop_num",   label: "Stop #"     },
-  { key: "readex",     label: "Read"       },
-  { key: "try_num",    label: "Try #"      },
+  { key: "datex", label: "Date" },
+  { key: "typex", label: "Type" },
+  { key: "i_calf_num", label: "I Calf #" },
+  { key: "u_calf_num", label: "U Calf #" },
+  { key: "stop_num", label: "Stop #" },
+  { key: "readex", label: "Read" },
+  { key: "try_num", label: "Try #" },
 ];
 
 export default function IuMergePage() {
@@ -41,7 +41,9 @@ export default function IuMergePage() {
       setError(null);
       setRows([]);
       try {
-        const res = await fetch(`/api/cow/iumerge?wy_id=${encodeURIComponent(wyId)}`);
+        const res = await fetch(
+          `/api/cow/iumerge?wy_id=${encodeURIComponent(wyId)}`,
+        );
         if (!res.ok) {
           const payload = await res.json().catch(() => null);
           throw new Error(payload?.error ?? "Failed to fetch data");
@@ -63,7 +65,9 @@ export default function IuMergePage() {
       <h1 className="page-title">IU Merge</h1>
 
       {!wyId && (
-        <p className="page-meta">Enter a WY_id in the bar above to load records.</p>
+        <p className="page-meta">
+          Enter a WY_id in the bar above to load records.
+        </p>
       )}
 
       {wyId && (
@@ -99,7 +103,9 @@ export default function IuMergePage() {
       )}
 
       {!loading && !error && wyId && rows.length === 0 && (
-        <p className="page-meta">No records found for WY_id: <b>{wyId}</b></p>
+        <p className="page-meta">
+          No records found for WY_id: <b>{wyId}</b>
+        </p>
       )}
     </main>
   );

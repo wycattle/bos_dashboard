@@ -1,4 +1,4 @@
-
+//app\aggregates\page.tsx
 "use client";
 import React from "react";
 import Link from "next/link";
@@ -10,10 +10,19 @@ export default function AggregatesPage() {
   ];
   return (
     <div style={{ padding: "1.5rem" }}>
-      <Link href="/" style={{ display: "inline-block", marginBottom: "1rem", fontSize: "0.9em" }}>← Back to Homepage</Link>
+      <Link
+        href="/"
+        style={{
+          display: "inline-block",
+          marginBottom: "1rem",
+          fontSize: "0.9em",
+        }}
+      >
+        ← Back to Homepage
+      </Link>
       <h1 style={{ marginBottom: "1.5rem" }}>Aggregates</h1>
       <div style={{ display: "flex", gap: "1rem", marginBottom: "2rem" }}>
-        {tabs.map(tab => (
+        {tabs.map((tab) => (
           <Link
             key={tab.href}
             href={tab.href}

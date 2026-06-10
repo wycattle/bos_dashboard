@@ -1,9 +1,11 @@
+//app\net-revenue\page.tsx
+
 "use client";
 
-import React, { Suspense, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
-const API_BASE_URL = 'http://127.0.0.1:8000';
+const API_BASE_URL = "http://127.0.0.1:8000";
 
 type MonthlyRow = {
   year: number;
@@ -19,8 +21,20 @@ type MonthlyResult = {
   rows: MonthlyRow[];
 };
 
-const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_NAMES = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 const NetRevenuePageContent = () => {
   const searchParams = useSearchParams();
@@ -37,16 +51,20 @@ const NetRevenuePageContent = () => {
     setPlotUrl(null);
 
     try {
-      const res = await fetch(`${API_BASE_URL}/net-revenue/${encodeURIComponent(id)}/monthly`);
+      const res = await fetch(
+        `${API_BASE_URL}/net-revenue/${encodeURIComponent(id)}/monthly`,
+      );
       if (!res.ok) {
         const payload = await res.json().catch(() => null);
-        const detail = payload?.detail ?? 'Failed to fetch monthly data';
-        throw new Error(typeof detail === 'string' ? detail : JSON.stringify(detail));
+        const detail = payload?.detail ?? "Failed to fetch monthly data";
+        throw new Error(
+          typeof detail === "string" ? detail : JSON.stringify(detail),
+        );
       }
       const data: MonthlyResult = await res.json();
       setMonthly(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch data');
+      setError(err instanceof Error ? err.message : "Failed to fetch data");
     } finally {
       setLoading(false);
     }
@@ -56,27 +74,38 @@ const NetRevenuePageContent = () => {
   };
 
   useEffect(() => {
-    const requestedWyId = searchParams.get('wyId');
+    const requestedWyId = searchParams.get("wyId");
     if (!requestedWyId || requestedWyId === wyId) return;
     setWyId(requestedWyId);
     fetchData(requestedWyId);
   }, [searchParams, wyId]);
 
   const fmt = (v: number | null) =>
-    v == null ? '—' : v.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    v == null ? "—" : v.toLocaleString("en-US", { maximumFractionDigits: 0 });
 
   return (
     <main className="app-main">
       <h1 className="page-title">Net Revenue</h1>
-      {wyId && <p className="page-meta">Showing results for WY_id: <b>{wyId}</b></p>}
+      {wyId && (
+        <p className="page-meta">
+          Showing results for WY_id: <b>{wyId}</b>
+        </p>
+      )}
       {loading && <p className="page-meta">Loading…</p>}
       {error && <p className="error-text">{error}</p>}
 
       {(monthly || plotUrl) && (
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "2rem",
+            alignItems: "flex-start",
+            flexWrap: "wrap",
+          }}
+        >
           {/* Monthly table */}
           {monthly && monthly.rows.length > 0 && (
-            <div className="table-wrap" style={{ flex: '0 0 auto' }}>
+            <div className="table-wrap" style={{ flex: "0 0 auto" }}>
               <table className="data-table">
                 <thead>
                   <tr>
@@ -92,9 +121,13 @@ const NetRevenuePageContent = () => {
                     <tr key={i}>
                       <td>{row.year}</td>
                       <td>{MONTH_NAMES[(row.month ?? 1) - 1]}</td>
-                      <td style={{ textAlign: 'right' }}>{fmt(row.revenue)}</td>
-                      <td style={{ textAlign: 'right' }}>{fmt(row.feedcost)}</td>
-                      <td style={{ textAlign: 'right', fontWeight: 600 }}>{fmt(row.net_revenue)}</td>
+                      <td style={{ textAlign: "right" }}>{fmt(row.revenue)}</td>
+                      <td style={{ textAlign: "right" }}>
+                        {fmt(row.feedcost)}
+                      </td>
+                      <td style={{ textAlign: "right", fontWeight: 600 }}>
+                        {fmt(row.net_revenue)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -104,13 +137,19 @@ const NetRevenuePageContent = () => {
 
           {/* Plot — image served from local FastAPI, next/image not applicable */}
           {plotUrl && (
-            <div style={{ flex: '1 1 600px' }}>
+            <div style={{ flex: "1 1 600px" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={plotUrl}
                 alt={`Net revenue plot for WY_id ${wyId}`}
-                style={{ maxWidth: '100%', borderRadius: '6px', border: '1px solid var(--surface-border)' }}
-                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                style={{
+                  maxWidth: "100%",
+                  borderRadius: "6px",
+                  border: "1px solid var(--surface-border)",
+                }}
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
               />
             </div>
           )}
@@ -121,7 +160,13 @@ const NetRevenuePageContent = () => {
 };
 
 const NetRevenuePage = () => (
-  <Suspense fallback={<main className="app-main"><p className="page-meta">Loading…</p></main>}>
+  <Suspense
+    fallback={
+      <main className="app-main">
+        <p className="page-meta">Loading…</p>
+      </main>
+    }
+  >
     <NetRevenuePageContent />
   </Suspense>
 );
