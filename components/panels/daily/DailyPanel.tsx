@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import TendayTable from "./TendayTable";
 import HalfdayTable from "./HalfdayTable";
 import GroupsTable from "./GroupsTable";
+import FulldayTable from "./FulldayTable";
 
 export default function DailyPanel() {
   const router = useRouter();
@@ -63,7 +64,7 @@ export default function DailyPanel() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "320px 320px",
+          gridTemplateColumns: "320px 320px auto",
           gap: "5rem", //<-horiz gap betw panels
           justifyContent: "start", // ← anchor to left
           overflow: "hidden",
@@ -75,6 +76,9 @@ export default function DailyPanel() {
         </div>
         <div style={{ overflow: "auto", minHeight: 0 }}>
           <GroupsTable />
+        </div>
+        <div style={{ overflow: "auto", minHeight: 0 }}>
+          <FulldayTable />
         </div>
       </div>
     </div>
