@@ -1,6 +1,7 @@
 /*
  * POST /api/fullday
  *
+ *
  * Intended final purpose:
  *   Receive a POST trigger from Apps Script. Read the `am_liters`, `am_wy`,
  *   `pm_liters`, and `pm_wy` tables from Neon, compute fullday totals per
