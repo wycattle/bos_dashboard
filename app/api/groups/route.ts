@@ -7,7 +7,7 @@ export async function GET() {
     const sql = neon(process.env.DATABASE_URL!);
     const rows = await sql`
       SELECT wy_id, group_name, average, u_read
-      FROM groups
+      FROM wb_groups_formatted
       ORDER BY average DESC
     `;
     return NextResponse.json(rows);

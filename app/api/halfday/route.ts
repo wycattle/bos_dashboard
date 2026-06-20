@@ -10,7 +10,7 @@ export async function GET() {
     const sql = neon(process.env.DATABASE_URL!);
     const rows = await sql`
       SELECT wy_id, am, pm
-      FROM halfday
+      FROM halfday_formatted
       ORDER BY wy_id ASC
     `;
     return NextResponse.json(rows);
