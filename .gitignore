@@ -53,3 +53,4 @@ package-lock.json
 sqlite.session.sql
 
 
+.env*
