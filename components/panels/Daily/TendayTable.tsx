@@ -14,9 +14,9 @@ type SortKey = keyof Omit<TendayRow, "dates">;
 type SortDir = "asc" | "desc";
 
 export default function TendayTable() {
-  const [rows, setRows]       = useState<TendayRow[]>([]);
+  const [rows, setRows] = useState<TendayRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("run_date");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
 
@@ -45,7 +45,7 @@ export default function TendayTable() {
         setSortDir("asc");
       }
     },
-    [sortKey]
+    [sortKey],
   );
 
   const sorted = sortRows(rows, sortKey, sortDir);
@@ -71,27 +71,62 @@ export default function TendayTable() {
     sortKey === key ? (sortDir === "asc" ? " ▲" : " ▼") : "";
 
   if (loading) return <p style={{ padding: "1rem" }}>Loading…</p>;
-  if (error) return <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>;
+  if (error)
+    return (
+      <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>
+    );
 
   return (
     <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
-      <h2 style={{ margin: "0 0 0.5rem 0", fontSize: "1rem" }}>Ten-Day Milk Records</h2>
+      <h2 style={{ margin: "0 0 0.5rem 0", fontSize: "1rem" }}>
+        Ten-Day Milk Records
+      </h2>
       <table className="data-table">
         <thead>
           <tr>
-            <th onClick={() => handleSort("wy_id")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
+            <th
+              onClick={() => handleSort("wy_id")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
               WY ID{arrow("wy_id")}
             </th>
-            <th onClick={() => handleSort("run_date")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
+            <th
+              onClick={() => handleSort("run_date")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
               Run Date{arrow("run_date")}
             </th>
             {allDates.length > 0 && (
-              <th colSpan={allDates.length} style={{ textAlign: "center" }}>Dates (date → liters)</th>
+              <th colSpan={allDates.length} style={{ textAlign: "center" }}>
+                Dates (date → liters)
+              </th>
             )}
-            <th onClick={() => handleSort("average")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
+            <th
+              onClick={() => handleSort("average")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
               Average{arrow("average")}
             </th>
-            <th onClick={() => handleSort("dev_from_avg")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
+            <th
+              onClick={() => handleSort("dev_from_avg")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
               Dev from Avg{arrow("dev_from_avg")}
             </th>
           </tr>
@@ -128,7 +163,9 @@ export default function TendayTable() {
             <tr key={i}>
               <td style={{ textAlign: "center" }}>{row.wy_id}</td>
               <td style={{ textAlign: "center" }}>
-                {row.run_date ? new Date(row.run_date).toLocaleDateString() : "—"}
+                {row.run_date
+                  ? new Date(row.run_date).toLocaleDateString()
+                  : "—"}
               </td>
               {allDates.map((date, idx) => {
                 let liters = "";
@@ -159,7 +196,9 @@ export default function TendayTable() {
                 {row.average != null ? Number(row.average).toFixed(1) : "—"}
               </td>
               <td style={{ textAlign: "center" }}>
-                {row.dev_from_avg != null ? Number(row.dev_from_avg).toFixed(2) : "—"}
+                {row.dev_from_avg != null
+                  ? Number(row.dev_from_avg).toFixed(2)
+                  : "—"}
               </td>
             </tr>
           ))}
