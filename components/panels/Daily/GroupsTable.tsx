@@ -1,122 +1,102 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
-import { sortRows } from "@/utils/sortRows";
+import React, { useEffect, useState } from "react";
 
 interface GroupRow {
-  WY_id: number;
+  WY_id: string;
   group_name: string | null;
-  average: number | null;
+  average: string | null;
+  pct_chg: string | null;
+  days_milking: string | null;
   u_read: string | null;
+  expected_bdate: string | null;
 }
 
-type SortKey = keyof GroupRow;
-type SortDir = "asc" | "desc";
+const th: React.CSSProperties = {
+  textAlign: "center",
+  fontSize: "0.72rem",
+  padding: "2px 4px",
+  whiteSpace: "normal",
+  lineHeight: "1.2",
+};
+const thF: React.CSSProperties = {
+  textAlign: "center",
+  fontSize: "0.72rem",
+  padding: "2px 4px",
+  fontWeight: 700,
+};
+const td: React.CSSProperties = {
+  textAlign: "center",
+  fontSize: "0.72rem",
+  padding: "1px 4px",
+};
+const tdF: React.CSSProperties = {
+  textAlign: "center",
+  fontSize: "0.72rem",
+  padding: "1px 4px",
+  fontWeight: 600,
+};
 
 export default function GroupsTable() {
   const [rows, setRows] = useState<GroupRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>("average");
-  const [sortDir, setSortDir] = useState<SortDir>("desc");
 
   useEffect(() => {
     fetch("/api/groups")
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
       })
-      .then((data) => {
-        setRows(data);
+      .then((d) => {
+        setRows(d);
         setLoading(false);
       })
-      .catch((err) => {
-        setError(err.message);
+      .catch((e) => {
+        setError(e.message);
         setLoading(false);
       });
   }, []);
 
-  const handleSort = useCallback(
-    (key: SortKey) => {
-      if (key === sortKey) {
-        setSortDir((d) => (d === "asc" ? "desc" : "asc"));
-      } else {
-        setSortKey(key);
-        setSortDir("desc");
-      }
-    },
-    [sortKey],
-  );
-
-  const sorted = sortRows(rows, sortKey, sortDir);
-
-  const arrow = (key: SortKey) =>
-    sortKey === key ? (sortDir === "asc" ? " ▲" : " ▼") : "";
-
-  if (loading) return <p style={{ padding: "1rem" }}>Loading…</p>;
+  if (loading)
+    return <p style={{ padding: "0.5rem", fontSize: "0.8rem" }}>Loading…</p>;
   if (error)
     return (
-      <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>
+      <p
+        style={{
+          padding: "0.5rem",
+          color: "var(--danger)",
+          fontSize: "0.8rem",
+        }}
+      >
+        Error: {error}
+      </p>
     );
 
   return (
     <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
-      <h2 style={{ margin: "0 0 0.5rem 0", fontSize: "1rem" }}>Groups Data</h2>
+      <h2 style={{ margin: "0 0 0.25rem 0", fontSize: "0.85rem" }}>Groups</h2>
       <table className="data-table">
         <thead>
           <tr>
-            <th
-              onClick={() => handleSort("WY_id")}
-              style={{
-                cursor: "pointer",
-                userSelect: "none",
-                textAlign: "center",
-              }}
-            >
-              WY ID{arrow("WY_id")}
-            </th>
-            <th
-              onClick={() => handleSort("group_name")}
-              style={{
-                cursor: "pointer",
-                userSelect: "none",
-                textAlign: "center",
-              }}
-            >
-              Group Name{arrow("group_name")}
-            </th>
-            <th
-              onClick={() => handleSort("average")}
-              style={{
-                cursor: "pointer",
-                userSelect: "none",
-                textAlign: "center",
-              }}
-            >
-              Average{arrow("average")}
-            </th>
-            <th
-              onClick={() => handleSort("u_read")}
-              style={{
-                cursor: "pointer",
-                userSelect: "none",
-                textAlign: "center",
-              }}
-            >
-              U Read{arrow("u_read")}
-            </th>
+            <th style={th}>WY ID</th>
+            <th style={th}>grp</th>
+            <th style={thF}>avg</th>
+            <th style={thF}>pct chg</th>
+            <th style={th}>days</th>
+            <th style={th}>u_read</th>
+            <th style={th}>exp bdate</th>
           </tr>
         </thead>
         <tbody>
-          {sorted.map((row, i) => (
+          {rows.map((row, i) => (
             <tr key={i}>
-              <td style={{ textAlign: "center" }}>{row.WY_id}</td>
-              <td style={{ textAlign: "center" }}>{row.group_name ?? "—"}</td>
-              <td style={{ textAlign: "center" }}>
-                {row.average != null ? Number(row.average).toFixed(1) : "—"}
-              </td>
-              <td style={{ textAlign: "center" }}>
-                {row.u_read != null ? row.u_read : "—"}
-              </td>
+              <td style={td}>{row.WY_id}</td>
+              <td style={td}>{row.group_name || "—"}</td>
+              <td style={tdF}>{row.average || "—"}</td>
+              <td style={tdF}>{row.pct_chg || "—"}</td>
+              <td style={td}>{row.days_milking || "—"}</td>
+              <td style={td}>{row.u_read || "—"}</td>
+              <td style={td}>{row.expected_bdate || "—"}</td>
             </tr>
           ))}
         </tbody>

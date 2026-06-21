@@ -1,112 +1,83 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
-import { sortRows } from "@/utils/sortRows";
+import React, { useEffect, useState } from "react";
 
 interface HalfdayRow {
-  WY_id: number;
-  am: number | null;
-  pm: number | null;
+  WY_id: string;
+  am: string;
+  pm: string;
 }
 
-type SortKey = keyof HalfdayRow;
-type SortDir = "asc" | "desc";
+const th: React.CSSProperties = {
+  textAlign: "center",
+  fontSize: "0.72rem",
+  padding: "2px 4px",
+};
+const td: React.CSSProperties = {
+  textAlign: "right",
+  fontSize: "0.72rem",
+  padding: "1px 4px",
+};
+const tdc: React.CSSProperties = {
+  textAlign: "center",
+  fontSize: "0.72rem",
+  padding: "1px 4px",
+};
 
 export default function HalfdayTable() {
   const [rows, setRows] = useState<HalfdayRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>("WY_id");
-  const [sortDir, setSortDir] = useState<SortDir>("asc");
 
   useEffect(() => {
     fetch("/api/halfday")
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
       })
-      .then((data) => {
-        setRows(data);
+      .then((d) => {
+        setRows(d);
         setLoading(false);
       })
-      .catch((err) => {
-        setError(err.message);
+      .catch((e) => {
+        setError(e.message);
         setLoading(false);
       });
   }, []);
 
-  const handleSort = useCallback(
-    (key: SortKey) => {
-      if (key === sortKey) {
-        setSortDir((d) => (d === "asc" ? "desc" : "asc"));
-      } else {
-        setSortKey(key);
-        setSortDir("asc");
-      }
-    },
-    [sortKey],
-  );
-
-  const sorted = sortRows(rows, sortKey, sortDir);
-
-  const arrow = (key: SortKey) =>
-    sortKey === key ? (sortDir === "asc" ? " ▲" : " ▼") : "";
-
-  if (loading) return <p style={{ padding: "1rem" }}>Loading…</p>;
+  if (loading)
+    return <p style={{ padding: "0.5rem", fontSize: "0.8rem" }}>Loading…</p>;
   if (error)
     return (
-      <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>
+      <p
+        style={{
+          padding: "0.5rem",
+          color: "var(--danger)",
+          fontSize: "0.8rem",
+        }}
+      >
+        Error: {error}
+      </p>
     );
 
   return (
     <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
-      <h2 style={{ margin: "0 0 0.5rem 0", fontSize: "1rem" }}>
-        Half-Day Milk Records
+      <h2 style={{ margin: "0 0 0.25rem 0", fontSize: "0.85rem" }}>
+        Half-Day Summary
       </h2>
       <table className="data-table">
         <thead>
           <tr>
-            <th
-              onClick={() => handleSort("WY_id")}
-              style={{
-                cursor: "pointer",
-                userSelect: "none",
-                textAlign: "center",
-              }}
-            >
-              WY ID{arrow("WY_id")}
-            </th>
-            <th
-              onClick={() => handleSort("am")}
-              style={{
-                cursor: "pointer",
-                userSelect: "none",
-                textAlign: "center",
-              }}
-            >
-              AM (liters){arrow("am")}
-            </th>
-            <th
-              onClick={() => handleSort("pm")}
-              style={{
-                cursor: "pointer",
-                userSelect: "none",
-                textAlign: "center",
-              }}
-            >
-              PM (liters){arrow("pm")}
-            </th>
+            <th style={th}>WY ID</th>
+            <th style={th}>AM</th>
+            <th style={th}>PM</th>
           </tr>
         </thead>
         <tbody>
-          {sorted.map((row, i) => (
+          {rows.map((row, i) => (
             <tr key={i}>
-              <td style={{ textAlign: "center" }}>{row.WY_id}</td>
-              <td style={{ textAlign: "right" }}>
-                {row.am != null ? Number(row.am).toFixed(1) : "—"}
-              </td>
-              <td style={{ textAlign: "right" }}>
-                {row.pm != null ? Number(row.pm).toFixed(1) : "—"}
-              </td>
+              <td style={tdc}>{row.WY_id}</td>
+              <td style={td}>{row.am || "—"}</td>
+              <td style={td}>{row.pm || "—"}</td>
             </tr>
           ))}
         </tbody>

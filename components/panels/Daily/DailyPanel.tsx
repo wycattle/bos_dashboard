@@ -4,39 +4,34 @@ import { useRouter } from "next/navigation";
 import TendayTable from "./TendayTable";
 import HalfdayTable from "./HalfdayTable";
 import GroupsTable from "./GroupsTable";
-// import FulldayTable from "./FulldayTable";
 
 export default function DailyPanel() {
   const router = useRouter();
   return (
     <div
       style={{
-        // gap on a grid container controls space between its direct children.
-        // Outer grid gap = vertical split.
-        // Inner grid gap = horizontal split. They're independent.
         display: "grid",
-        gridTemplateRows: "3fr 2fr",
+        gridTemplateColumns: "1fr auto auto",
+        gap: "1.5rem",
         height: "100%",
-        gap: "2rem", //vertical gap betw panels
         overflow: "hidden",
-        padding: "1rem",
+        padding: "2.5rem 1rem 1rem 1rem",
         position: "relative",
       }}
     >
-      {/* Home button top-left */}
       <div
         style={{
           position: "absolute",
-          top: "1rem",
-          left: "1rem",
+          top: "0.5rem",
+          left: "0.5rem",
           zIndex: 10,
         }}
       >
         <button
           onClick={() => router.push("/")}
           style={{
-            padding: "0.4rem 0.9rem ",
-            fontSize: "0.85rem",
+            padding: "0.3rem 0.7rem",
+            fontSize: "0.8rem",
             fontWeight: 600,
             background: "#1e293b",
             color: "#f8fafc",
@@ -48,35 +43,14 @@ export default function DailyPanel() {
           ⌂ Home
         </button>
       </div>
-
-      {/* Top half: TendayTable full width */}
-      <div
-        style={{
-          overflow: "auto",
-          minHeight: 0,
-          paddingTop: "4.0rem", //vert space from Home button
-        }}
-      >
+      <div style={{ overflow: "auto", minHeight: 0 }}>
         <TendayTable />
       </div>
-
-      {/* Bottom half: two columns side by side */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "320px 320px auto",
-          gap: "5rem", //<-horiz gap betw panels
-          justifyContent: "start", // ← anchor to left
-          overflow: "hidden",
-          minHeight: 0,
-        }}
-      >
-        <div style={{ overflow: "auto", minHeight: 0 }}>
-          <HalfdayTable />
-        </div>
-        <div style={{ overflow: "auto", minHeight: 0 }}>
-          <GroupsTable />
-        </div>
+      <div style={{ overflow: "auto", minHeight: 0, width: "160px" }}>
+        <HalfdayTable />
+      </div>
+      <div style={{ overflow: "auto", minHeight: 0, width: "280px" }}>
+        <GroupsTable />
       </div>
     </div>
   );
