@@ -6,7 +6,7 @@ export async function GET() {
     const sql = neon(process.env.DATABASE_URL!);
     const rows = await sql`
       SELECT
-        wy_id,
+        WY_id,
         status,
         to_char(last_stop_date,  'YYYY-MM-DD') AS last_stop_date,
         stop_calf_num,

@@ -4,7 +4,7 @@ import { sortRows } from "@/utils/sortRows";
 import { SortableTh } from "@/utils/SortableTh";
 
 interface AllxRow {
-  wy_id: number;
+  WY_id: number;
   status?: string | null;
   last_stop_date?: string | null; // DATE
   stop_calf_num?: number | null;
@@ -34,7 +34,7 @@ export default function AllxTable() {
   const [rows, setRows] = useState<AllxRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>("wy_id");
+  const [sortKey, setSortKey] = useState<SortKey>("WY_id");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function AllxTable() {
       <table className="data-table">
         <thead>
           <tr>
-            {th("wy_id", "WY ID")}
+            {th("WY_id", "WY ID")}
             {th("status", "Status")}
             {th("last_stop_date", "Last Stop Date")}
             {th("stop_calf_num", "Stop Calf #")}
@@ -114,7 +114,7 @@ export default function AllxTable() {
         <tbody>
           {rows.map((row, i) => (
             <tr key={i}>
-              {cell(row.wy_id)}
+              {cell(row.WY_id)}
               {cell(row.status)}
               {cell(row.last_stop_date)}
               {cell(row.stop_calf_num)}

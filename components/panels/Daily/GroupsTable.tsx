@@ -3,19 +3,19 @@ import React, { useEffect, useState, useCallback } from "react";
 import { sortRows } from "@/utils/sortRows";
 
 interface GroupRow {
-  wy_id:      number;
+  WY_id: number;
   group_name: string | null;
-  average:    number | null;
-  u_read:     string | null;
+  average: number | null;
+  u_read: string | null;
 }
 
 type SortKey = keyof GroupRow;
 type SortDir = "asc" | "desc";
 
 export default function GroupsTable() {
-  const [rows, setRows]       = useState<GroupRow[]>([]);
+  const [rows, setRows] = useState<GroupRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("average");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
 
@@ -44,7 +44,7 @@ export default function GroupsTable() {
         setSortDir("desc");
       }
     },
-    [sortKey]
+    [sortKey],
   );
 
   const sorted = sortRows(rows, sortKey, sortDir);
@@ -53,7 +53,10 @@ export default function GroupsTable() {
     sortKey === key ? (sortDir === "asc" ? " ▲" : " ▼") : "";
 
   if (loading) return <p style={{ padding: "1rem" }}>Loading…</p>;
-  if (error) return <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>;
+  if (error)
+    return (
+      <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>
+    );
 
   return (
     <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
@@ -61,16 +64,44 @@ export default function GroupsTable() {
       <table className="data-table">
         <thead>
           <tr>
-            <th onClick={() => handleSort("wy_id")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
-              WY ID{arrow("wy_id")}
+            <th
+              onClick={() => handleSort("WY_id")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
+              WY ID{arrow("WY_id")}
             </th>
-            <th onClick={() => handleSort("group_name")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
+            <th
+              onClick={() => handleSort("group_name")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
               Group Name{arrow("group_name")}
             </th>
-            <th onClick={() => handleSort("average")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
+            <th
+              onClick={() => handleSort("average")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
               Average{arrow("average")}
             </th>
-            <th onClick={() => handleSort("u_read")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
+            <th
+              onClick={() => handleSort("u_read")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
               U Read{arrow("u_read")}
             </th>
           </tr>
@@ -78,10 +109,14 @@ export default function GroupsTable() {
         <tbody>
           {sorted.map((row, i) => (
             <tr key={i}>
-              <td style={{ textAlign: "center" }}>{row.wy_id}</td>
+              <td style={{ textAlign: "center" }}>{row.WY_id}</td>
               <td style={{ textAlign: "center" }}>{row.group_name ?? "—"}</td>
-              <td style={{ textAlign: "center" }}>{row.average != null ? Number(row.average).toFixed(1) : "—"}</td>
-              <td style={{ textAlign: "center" }}>{row.u_read != null ? row.u_read : "—"}</td>
+              <td style={{ textAlign: "center" }}>
+                {row.average != null ? Number(row.average).toFixed(1) : "—"}
+              </td>
+              <td style={{ textAlign: "center" }}>
+                {row.u_read != null ? row.u_read : "—"}
+              </td>
             </tr>
           ))}
         </tbody>

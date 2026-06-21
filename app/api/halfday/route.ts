@@ -9,9 +9,9 @@ export async function GET() {
   try {
     const sql = neon(process.env.DATABASE_URL!);
     const rows = await sql`
-      SELECT wy_id, am, pm
+      SELECT WY_id, am, pm
       FROM halfday_formatted
-      ORDER BY wy_id ASC
+      ORDER BY WY_id ASC
     `;
     return NextResponse.json(rows);
   } catch (err) {

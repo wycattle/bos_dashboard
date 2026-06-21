@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { sortRows } from "@/utils/sortRows";
 
 interface TendayRow {
-  wy_id: string;
+  WY_id: string;
   run_date: string;
   dates: Record<string, number>;
   average: number | null;
@@ -85,14 +85,14 @@ export default function TendayTable() {
         <thead>
           <tr>
             <th
-              onClick={() => handleSort("wy_id")}
+              onClick={() => handleSort("WY_id")}
               style={{
                 cursor: "pointer",
                 userSelect: "none",
                 textAlign: "center",
               }}
             >
-              WY ID{arrow("wy_id")}
+              WY ID{arrow("WY_id")}
             </th>
             <th
               onClick={() => handleSort("run_date")}
@@ -161,7 +161,7 @@ export default function TendayTable() {
         <tbody>
           {sorted.map((row, i) => (
             <tr key={i}>
-              <td style={{ textAlign: "center" }}>{row.wy_id}</td>
+              <td style={{ textAlign: "center" }}>{row.WY_id}</td>
               <td style={{ textAlign: "center" }}>
                 {row.run_date
                   ? new Date(row.run_date).toLocaleDateString()

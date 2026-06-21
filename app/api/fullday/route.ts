@@ -5,11 +5,11 @@
  * Intended final purpose:
  *   Receive a POST trigger from Apps Script. Read the `am_liters`, `am_wy`,
  *   `pm_liters`, and `pm_wy` tables from Neon, compute fullday totals per
- *   (date, wy_id) by combining AM and PM half-day records, then upsert the
+ *   (date, WY_id) by combining AM and PM half-day records, then upsert the
  *   aggregated results into a `fullday` table in Neon.
  *
  * Current state: tail-only compute — recomputes only the last 30 distinct dates
- * from am_liters, accumulates liters per (date, wy_id) across AM and PM, then
+ * from am_liters, accumulates liters per (date, WY_id) across AM and PM, then
  * upserts those rows into the fullday table. Historical rows are never touched.
  */
 
@@ -52,7 +52,7 @@ export async function POST() {
       sql`SELECT * FROM pm_liters WHERE date = ANY(${tailDates}) ORDER BY date`,
     ]);
 
-    // Step 3: accumulate liters per (date, wy_id)
+    // Step 3: accumulate liters per (date, WY_id)
     const totals = new Map<string, Map<string, number>>();
 
     function accumulate(

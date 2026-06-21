@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { sortRows } from "@/utils/sortRows";
 
 interface HalfdayRow {
-  wy_id: number;
+  WY_id: number;
   am: number | null;
   pm: number | null;
 }
@@ -12,10 +12,10 @@ type SortKey = keyof HalfdayRow;
 type SortDir = "asc" | "desc";
 
 export default function HalfdayTable() {
-  const [rows, setRows]       = useState<HalfdayRow[]>([]);
+  const [rows, setRows] = useState<HalfdayRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>("wy_id");
+  const [error, setError] = useState<string | null>(null);
+  const [sortKey, setSortKey] = useState<SortKey>("WY_id");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function HalfdayTable() {
         setSortDir("asc");
       }
     },
-    [sortKey]
+    [sortKey],
   );
 
   const sorted = sortRows(rows, sortKey, sortDir);
@@ -52,21 +52,47 @@ export default function HalfdayTable() {
     sortKey === key ? (sortDir === "asc" ? " ▲" : " ▼") : "";
 
   if (loading) return <p style={{ padding: "1rem" }}>Loading…</p>;
-  if (error) return <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>;
+  if (error)
+    return (
+      <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>
+    );
 
   return (
     <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
-      <h2 style={{ margin: "0 0 0.5rem 0", fontSize: "1rem" }}>Half-Day Milk Records</h2>
+      <h2 style={{ margin: "0 0 0.5rem 0", fontSize: "1rem" }}>
+        Half-Day Milk Records
+      </h2>
       <table className="data-table">
         <thead>
           <tr>
-            <th onClick={() => handleSort("wy_id")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
-              WY ID{arrow("wy_id")}
+            <th
+              onClick={() => handleSort("WY_id")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
+              WY ID{arrow("WY_id")}
             </th>
-            <th onClick={() => handleSort("am")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
+            <th
+              onClick={() => handleSort("am")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
               AM (liters){arrow("am")}
             </th>
-            <th onClick={() => handleSort("pm")} style={{ cursor: "pointer", userSelect: "none", textAlign: "center" }}>
+            <th
+              onClick={() => handleSort("pm")}
+              style={{
+                cursor: "pointer",
+                userSelect: "none",
+                textAlign: "center",
+              }}
+            >
               PM (liters){arrow("pm")}
             </th>
           </tr>
@@ -74,9 +100,13 @@ export default function HalfdayTable() {
         <tbody>
           {sorted.map((row, i) => (
             <tr key={i}>
-              <td style={{ textAlign: "center" }}>{row.wy_id}</td>
-              <td style={{ textAlign: "right" }}>{row.am != null ? Number(row.am).toFixed(1) : "—"}</td>
-              <td style={{ textAlign: "right" }}>{row.pm != null ? Number(row.pm).toFixed(1) : "—"}</td>
+              <td style={{ textAlign: "center" }}>{row.WY_id}</td>
+              <td style={{ textAlign: "right" }}>
+                {row.am != null ? Number(row.am).toFixed(1) : "—"}
+              </td>
+              <td style={{ textAlign: "right" }}>
+                {row.pm != null ? Number(row.pm).toFixed(1) : "—"}
+              </td>
             </tr>
           ))}
         </tbody>
