@@ -1,47 +1,40 @@
-import Link from "next/link";
+"use client";
+import { useRouter } from "next/navigation";
 
-const sections = [
-  { label: "Daily Data", href: "/dashboard" },
-  { label: "Aggregates", href: "/aggregates" },
-  { label: "Individual Cow", href: "/cow" },
-] as const;
-
-export default function HomePage() {
+export default function Home() {
+  const router = useRouter();
+  const btn: React.CSSProperties = {
+    padding: "1rem 2rem",
+    fontSize: "1.1rem",
+    fontWeight: 600,
+    background: "#1e293b",
+    color: "#f8fafc",
+    border: "1px solid #475569",
+    borderRadius: "8px",
+    cursor: "pointer",
+    width: "220px",
+  };
   return (
-    <main style={{ padding: "2rem", maxWidth: 600, margin: "0 auto" }}>
-      <h1
-        style={{
-          color: "var(--foreground)",
-          marginBottom: "2rem",
-          fontSize: "2rem",
-        }}
-      >
-        BOS Dashboard
-      </h1>
-      <nav style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        {sections.map(({ label, href }) => (
-          <Link key={href} href={href} style={{ textDecoration: "none" }}>
-            <div
-              style={{
-                padding: "1.25rem 1.5rem",
-                border: "1px solid var(--surface-border)",
-                borderRadius: "0.5rem",
-                background: "var(--surface-contrast)",
-                color: "var(--foreground)",
-                fontSize: "1.1rem",
-                cursor: "pointer",
-              }}
-            >
-              {label}
-              <span
-                style={{ float: "right", color: "var(--muted-foreground)" }}
-              >
-                →
-              </span>
-            </div>
-          </Link>
-        ))}
-      </nav>
-    </main>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        gap: "1.5rem",
+      }}
+    >
+      <h1 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>🐄 WY Cattle</h1>
+      <button style={btn} onClick={() => router.push("/daily")}>
+        📊 Daily Data
+      </button>
+      <button style={btn} onClick={() => router.push("/aggregates")}>
+        🔬 Aggregates
+      </button>
+      <button style={btn} onClick={() => router.push("/cow")}>
+        🐮 Individual Cow
+      </button>
+    </div>
   );
 }
