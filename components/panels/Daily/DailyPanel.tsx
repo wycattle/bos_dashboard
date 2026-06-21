@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import TendayTable from "./TendayTable";
 import HalfdayTable from "./HalfdayTable";
 import GroupsTable from "./GroupsTable";
-import FulldayTable from "./FulldayTable";
+// import FulldayTable from "./FulldayTable";
 
 export default function DailyPanel() {
   const router = useRouter();
@@ -76,9 +76,6 @@ export default function DailyPanel() {
         </div>
         <div style={{ overflow: "auto", minHeight: 0 }}>
           <GroupsTable />
-        </div>
-        <div style={{ overflow: "auto", minHeight: 0 }}>
-          <FulldayTable />
         </div>
       </div>
     </div>
