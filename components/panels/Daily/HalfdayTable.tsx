@@ -4,8 +4,8 @@ import { sortRows } from "@/utils/sortRows";
 
 interface HalfdayRow {
   WY_id: number;
-  AM: number | null;
-  PM: number | null;
+  am: number | null;
+  pm: number | null;
 }
 
 type SortKey = keyof HalfdayRow;
