@@ -5,9 +5,13 @@ export async function GET() {
   try {
     const sql = neon(process.env.DATABASE_URL!);
     const rows = await sql`
-      SELECT WY_id, group_name, average, u_read
+      SELECT
+        "WY_id",
+        "group"            AS group_name,
+        "avg"              AS average,
+        "u_read"
       FROM wb_groups_formatted
-      ORDER BY average DESC
+      ORDER BY "avg" DESC
     `;
     return NextResponse.json(rows);
   } catch (err) {

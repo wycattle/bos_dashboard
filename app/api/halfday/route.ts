@@ -9,7 +9,7 @@ export async function GET() {
   try {
     const sql = neon(process.env.DATABASE_URL!);
     const rows = await sql`
-      SELECT WY_id, am, pm
+      SELECT WY_id, AM, PM
       FROM halfday_formatted
       ORDER BY WY_id ASC
     `;
