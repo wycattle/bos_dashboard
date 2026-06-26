@@ -28,15 +28,15 @@ export default function Home() {
     >
       <h1
         style={{
-          fontSize: "1.5rem",
+          fontSize: "2.5rem",
           margin: 0,
-          color: "white",
+          color: "#abd5e8",
           textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
         }}
       >
         WY Cattle
       </h1>
-      <div style={{ position: "relative", width: "180px", height: "180px" }}>
+      <div style={{ position: "relative", width: "280px", height: "280px" }}>
         <img
           src="/images/LeiWithMushrooms.jpeg"
           alt="Cattle"
@@ -45,7 +45,7 @@ export default function Home() {
             height: "100%",
             borderRadius: "50%",
             objectFit: "cover",
-            border: "3px solid #475569",
+            border: "8px solid #174457",
           }}
         />
       </div>
