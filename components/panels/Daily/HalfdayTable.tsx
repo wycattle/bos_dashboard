@@ -1,10 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-interface HalfdayRow {
-  WY_id: string;
-  am: string;
-  pm: string;
+interface DynamicRow {
+  [key: string]: string;
 }
 
 const th: React.CSSProperties = {
@@ -24,7 +22,7 @@ const tdc: React.CSSProperties = {
 };
 
 export default function HalfdayTable() {
-  const [rows, setRows] = useState<HalfdayRow[]>([]);
+  const [rows, setRows] = useState<DynamicRow[]>([]);  //DynamicRow is set in 4
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -59,6 +57,10 @@ export default function HalfdayTable() {
       </p>
     );
 
+    const dateColumnKey = rows.length > 0 
+      ? Object.keys(rows[0]).find(k => k !== "AM" && k !== "PM") 
+      : null;
+
   return (
     <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
       <h2 style={{ margin: "0 0 0.25rem 0", fontSize: "0.85rem" }}>
@@ -67,7 +69,7 @@ export default function HalfdayTable() {
       <table className="data-table">
         <thead>
           <tr>
-            <th style={th}>WY ID</th>
+            <th style={th}>{dateColumnKey || "Date"}</th> 
             <th style={th}>AM</th>
             <th style={th}>PM</th>
           </tr>
@@ -75,9 +77,9 @@ export default function HalfdayTable() {
         <tbody>
           {rows.map((row, i) => (
             <tr key={i}>
-              <td style={tdc}>{row.WY_id}</td>
-              <td style={td}>{row.am || "—"}</td>
-              <td style={td}>{row.pm || "—"}</td>
+              <td style={tdc}>{dateColumnKey ? row[dateColumnKey] : "—"}</td> 
+              <td style={td}>{row.AM || "—"}</td>
+              <td style={td}>{row.PM || "—"}</td>
             </tr>
           ))}
         </tbody>

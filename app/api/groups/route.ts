@@ -6,12 +6,9 @@ export async function GET() {
     const sql = neon(process.env.DATABASE_URL!);
     const rows = await sql`
       SELECT
-        "WY_id",
-        "group"            AS group_name,
-        "avg"              AS average,
-        "u_read"
+      *
       FROM wb_groups_formatted
-      ORDER BY "avg" DESC
+      ORDER BY 3 DESC
     `;
     return NextResponse.json(rows);
   } catch (err) {
