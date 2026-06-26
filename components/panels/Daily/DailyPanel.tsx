@@ -33,7 +33,7 @@ export default function DailyPanel() {
             padding: "0.3rem 0.7rem",
             fontSize: "0.8rem",
             fontWeight: 600,
-            background: "#261b1f",
+            background: "#470332",
             color: "#f8fafc",
             border: "1px solid #475569",
             borderRadius: "6px",
