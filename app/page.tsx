@@ -38,7 +38,7 @@ export default function Home() {
       </h1>
       <div style={{ position: "relative", width: "180px", height: "180px" }}>
         <img
-          src="/images/Ipad2 104.JPG"
+          src="/images/LeiWithMushrooms.jpeg"
           alt="Cattle"
           style={{
             width: "100%",
