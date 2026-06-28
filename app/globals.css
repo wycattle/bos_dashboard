@@ -70,8 +70,8 @@ textarea {
   background: var(--background);
 }
 
-/* === Sidebar === */
-.app-sidebar {
+/* === wyid_inputbox === */
+.app-wyid_inputbox {
   width: 280px;
   min-height: 100vh;
   padding: 28px 22px;
@@ -80,25 +80,25 @@ textarea {
   border-right: 1px solid var(--surface-border);
 }
 
-.app-sidebar h2 {
+.app-wyid_inputbox h2 {
   margin-bottom: 18px;
   font-size: 2.2rem;
   line-height: 1.05;
 }
 
-.app-sidebar nav {
+.app-wyid_inputbox nav {
   margin-bottom: 42px;
 }
 
-.app-sidebar ul {
+.app-wyid_inputbox ul {
   list-style: none;
 }
 
-.app-sidebar li + li {
+.app-wyid_inputbox li + li {
   margin-top: 8px;
 }
 
-.app-sidebar a {
+.app-wyid_inputbox a {
   color: var(--link);
   font-size: 1rem;
 }
@@ -135,6 +135,18 @@ textarea {
   background: var(--accent);
   color: var(--accent-foreground);
   cursor: pointer;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: #032737;
+  color: #abd5e8;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 220px;
 }
 
 .primary-button:hover {
@@ -219,7 +231,7 @@ textarea {
     flex-direction: column;
   }
 
-  .app-sidebar {
+  .app-wyid_inputbox {
     width: 100%;
     min-height: auto;
     border-right: none;

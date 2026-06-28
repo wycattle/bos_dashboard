@@ -11,14 +11,18 @@ export default function DailyPanel() {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "1fr auto auto",
-        gap: "1.5rem",
+        gridTemplateColumns: "2fr auto 1.2fr",   // ← control proportion here
+        // 2fr – first column takes 2 fractions of the available space (after auto column is accounted for). "fr" stands for "fractional unit" and divides remaining space proportionally among fr columns.
+        //auto – second column sizes itself to its content width (no stretch). So the Halfday table will be as wide as its data.
+        //1.5fr – third column takes 1.5 fractions.
+        gap: "1rem",
         height: "100%",
         overflow: "hidden",
         padding: "2.5rem 1rem 1rem 1rem",
         position: "relative",
       }}
     >
+      {/* Home button */}
       <div
         style={{
           position: "absolute",
@@ -43,13 +47,27 @@ export default function DailyPanel() {
           ⌂ Home
         </button>
       </div>
-      <div style={{ overflow: "auto", minHeight: 0 }}>
+
+      {/* Tenday – left column */}
+      <div style={{ overflow: "hidden", minHeight: 0 }}>
         <TendayTable />
       </div>
-      <div style={{ overflow: "auto", minHeight: 0, width: "160px" }}>
+
+      {/* Halfday – middle column (auto width, shrinks to content) */}
+      <div
+        style={{
+          overflow: "hidden",
+          minHeight: 0,
+          display: "flex",
+          justifyContent: "center",
+          margin: "0 0.75rem",   // ← outside the border
+        }}
+      >
         <HalfdayTable />
       </div>
-      <div style={{ overflow: "auto", minHeight: 0, width: "280px" }}>
+
+      {/* Groups – right column */}
+      <div style={{ overflow: "hidden", minHeight: 0 }}>
         <GroupsTable />
       </div>
     </div>

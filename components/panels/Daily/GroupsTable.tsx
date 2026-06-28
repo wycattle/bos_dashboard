@@ -1,37 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import * as styles from "../../shared/tableStyles";
 
 interface DynamicRow {
   [key: string]: string;
 }
 
-const th: React.CSSProperties = {
-  textAlign: "center",
-  fontSize: "0.72rem",
-  padding: "2px 4px",
-  whiteSpace: "normal",
-  lineHeight: "1.2",
-};
-const thF: React.CSSProperties = {
-  textAlign: "center",
-  fontSize: "0.72rem",
-  padding: "2px 4px",
-  fontWeight: 700,
-};
-const td: React.CSSProperties = {
-  textAlign: "center",
-  fontSize: "0.72rem",
-  padding: "1px 4px",
-};
-const tdF: React.CSSProperties = {
-  textAlign: "center",
-  fontSize: "0.72rem",
-  padding: "1px 4px",
-  fontWeight: 600,
-};
-
 const knownFixedColumns = new Set([
-  "WY_id",
+  "wy_id",
   "avg",
   "pct chg from avg",
   "days milking",
@@ -84,30 +60,30 @@ export default function GroupsTable() {
       : null;
 
   return (
-    <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
+    <div style={ styles.tableContainer }>
       <h2 style={{ margin: "0 0 0.25rem 0", fontSize: "0.85rem" }}>Groups</h2>
       <table className="data-table">
         <thead>
           <tr>
-            <th style={th}>{dateColumnKey || "Date"}</th>
-            <th style={th}>WY ID</th>
-            <th style={thF}>avg</th>
-            <th style={thF}>pct chg</th>
-            <th style={th}>days</th>
-            <th style={th}>u_read</th>
-            <th style={th}>exp bdate</th>
+            <th style={styles.th}>{dateColumnKey || "Date"}</th>
+            <th style={styles.th}>WYid</th>
+            <th style={styles.thF}>avg</th>
+            <th style={styles.thF}>pct chg</th>
+            <th style={styles.th}>days</th>
+            <th style={styles.th}>u_read</th>
+            <th style={styles.th}>exp bdate</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
             <tr key={i}>
-              <td style={td}>{dateColumnKey ? row[dateColumnKey] : "—"}</td>
-              <td style={td}>{row.WY_id || "—"}</td>
-              <td style={tdF}>{row.avg || "—"}</td>
-              <td style={tdF}>{row["pct chg from avg"] || "—"}</td>
-              <td style={td}>{row["days milking"] || "—"}</td>
-              <td style={td}>{row.u_read || "—"}</td>
-              <td style={td}>{row["expected bdate"] || "—"}</td>
+              <td style={styles.td}>{dateColumnKey ? row[dateColumnKey] : "—"}</td>
+              <td style={styles.td}>{row.wy_id || "—"}</td>
+              <td style={styles.tdF}>{row.avg || "—"}</td>
+              <td style={styles.tdF}>{row["pct chg from avg"] || "—"}</td>
+              <td style={styles.td}>{row["days milking"] || "—"}</td>
+              <td style={styles.td}>{row.u_read || "—"}</td>
+              <td style={styles.tdDateWide}>{row["expected bdate"] || "—"}</td>
             </tr>
           ))}
         </tbody>

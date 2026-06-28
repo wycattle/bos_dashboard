@@ -1,8 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import * as XLSX from "xlsx";
+import * as styles from "../../shared/tableStyles";
 
 interface TendayRow {
-  WY_id: string;
+  wy_id: string;
   avg: string;
   "pct chg from avg": string;
   "days milking": string;
@@ -11,16 +13,9 @@ interface TendayRow {
   [key: string]: string; // date columns e.g. "06-07"
 }
 
-const isDateCol = (k: string) => /^\d{2}-\d{2}$/.test(k);
+const isDateCol = (k: string) => /^\d{2}-\d{2}$/.test(k); //regex /^\d{2}-\d{2}$/ filters 
+// for date column keys formatted exactly like two digits, a hyphen, two digits (e.g., "06-21").
 
-const SUMMARY_COLS = [
-  "WY_id",
-  "avg",
-  "pct chg from avg",
-  "days milking",
-  "u_read",
-  "expected bdate",
-];
 
 export default function TendayTable() {
   const [rows, setRows] = useState<TendayRow[]>([]);
@@ -43,6 +38,15 @@ export default function TendayTable() {
       });
   }, []);
 
+
+  const downloadXlsx = useCallback(() => {
+    if(!rows.length)return;
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Tenday");
+    XLSX.writeFile(wb, "tenday_summary.xlsx");
+  },[rows]);
+
   if (loading) return <p style={{ padding: "1rem" }}>Loading…</p>;
   if (error)
     return (
@@ -57,87 +61,72 @@ export default function TendayTable() {
   const dataRows = rows.slice(0, -1);
   const totalRow = rows[rows.length - 1];
 
-  const thDate: React.CSSProperties = {
-    textAlign: "right",
-    fontSize: "0.7rem",
-    padding: "2px 3px",
-    whiteSpace: "nowrap",
-  };
-  const thFocus: React.CSSProperties = {
-    textAlign: "center",
-    fontSize: "0.75rem",
-    padding: "2px 4px",
-    fontWeight: 700,
-  };
-  const thNorm: React.CSSProperties = {
-    textAlign: "center",
-    fontSize: "0.7rem",
-    padding: "2px 4px",
-  };
-  const tdDate: React.CSSProperties = {
-    textAlign: "right",
-    fontSize: "0.72rem",
-    padding: "1px 3px",
-  };
-  const tdFocus: React.CSSProperties = {
-    textAlign: "center",
-    fontSize: "0.75rem",
-    padding: "1px 4px",
-    fontWeight: 600,
-  };
-  const tdNorm: React.CSSProperties = {
-    textAlign: "center",
-    fontSize: "0.7rem",
-    padding: "1px 4px",
-  };
-
   return (
-    <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
-      <h2 style={{ margin: "0 0 0.25rem 0", fontSize: "0.85rem" }}>
-        10-Day Summary
+    <div style={styles.tableContainer}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.25rem" }}>
+      <h2 style={{ margin: 0, fontSize: "0.75rem", lineHeight: 1.2 }}>
+        10‑Day Summary
       </h2>
+
+      <button
+          onClick={downloadXlsx}
+          style={{
+            padding: "0.2rem 0.5rem",
+            fontSize: "0.7rem",
+            background: "#1e293b",
+            color: "#f8fafc",
+            border: "1px solid #475569",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontWeight: 600,
+          }}
+        >
+          ⬇ XLSX
+        </button>
+      </div>
       <table className="data-table">
         <thead>
           <tr>
-            <th style={thNorm}>WY ID</th>
+            <th style={styles.th}>wy_id</th>
             {dateCols.map((d) => (
-              <th key={d} style={thDate}>
+              <th key={d} style={styles.thDate}>
                 {d}
               </th>
             ))}
-            <th style={thFocus}>avg</th>
-            <th style={thFocus}>pct chg</th>
-            <th style={thNorm}>days</th>
-            <th style={thNorm}>u_read</th>
-            <th style={thNorm}>exp bdate</th>
+            <th style={styles.thF}>avg</th>
+            <th style={styles.thF}>pct chg</th>
+            <th style={styles.th}>days</th>
+            <th style={styles.th}>u_read</th>
+            <th style={styles.tdDateWide}>exp bdate</th>
           </tr>
         </thead>
         <tbody>
+
           {dataRows.map((row, i) => (
             <tr key={i}>
-              <td style={tdNorm}>{row.WY_id}</td>
+              <td style={styles.tdF}>{row.wy_id}</td>
               {dateCols.map((d) => (
-                <td key={d} style={tdDate}>
+                <td key={d} style={styles.tdDate}>
                   {row[d] || "—"}
                 </td>
               ))}
-              <td style={tdFocus}>{row.avg || "—"}</td>
-              <td style={tdFocus}>{row["pct chg from avg"] || "—"}</td>
-              <td style={tdNorm}>{row["days milking"] || "—"}</td>
-              <td style={tdNorm}>{row.u_read || "—"}</td>
-              <td style={tdNorm}>{row["expected bdate"] || "—"}</td>
+              <td style={styles.tdF}>{row.avg || "—"}</td>
+              <td style={styles.tdF}>{row["pct chg from avg"] || "—"}</td>
+              <td style={styles.td}>{row["days milking"] || "—"}</td>
+              <td style={styles.td}>{row.u_read || "—"}</td>
+              <td style={styles.tdDate}>{row["expected bdate"] || "—"}</td>
             </tr>
           ))}
           <tr
-            style={{ fontWeight: "bold", borderTop: "2px solid var(--border)" }}
+            style={{ fontWeight: "bold", borderTop: "2px solid var(--surface-border)" }}
           >
-            <td style={tdNorm}>—</td>
+            <td style={styles.td}>—</td>
             {dateCols.map((d) => (
-              <td key={d} style={tdDate}>
+              <td key={d} style={styles.tdDate}>
                 {totalRow[d] || "—"}
               </td>
             ))}
-            <td colSpan={4} style={tdFocus}>
+            <td colSpan={4} style={styles.tdF}>
               {totalRow["pct chg from avg"] || ""}
             </td>
             <td></td>

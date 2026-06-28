@@ -1,25 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import * as styles from "../../shared/tableStyles";
+// import { thDate, thFocus, thNorm, tdDate, tdFocus, tdNorm } from "../../shared/tableStyles";
 
 interface DynamicRow {
   [key: string]: string;
 }
-
-const th: React.CSSProperties = {
-  textAlign: "center",
-  fontSize: "0.72rem",
-  padding: "2px 4px",
-};
-const td: React.CSSProperties = {
-  textAlign: "right",
-  fontSize: "0.72rem",
-  padding: "1px 4px",
-};
-const tdc: React.CSSProperties = {
-  textAlign: "center",
-  fontSize: "0.72rem",
-  padding: "1px 4px",
-};
 
 export default function HalfdayTable() {
   const [rows, setRows] = useState<DynamicRow[]>([]);  //DynamicRow is set in 4
@@ -62,24 +48,24 @@ export default function HalfdayTable() {
       : null;
 
   return (
-    <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
+    <div style={styles.tableContainer}>
       <h2 style={{ margin: "0 0 0.25rem 0", fontSize: "0.85rem" }}>
         Half-Day Summary
       </h2>
       <table className="data-table">
         <thead>
           <tr>
-            <th style={th}>{dateColumnKey || "Date"}</th> 
-            <th style={th}>AM</th>
-            <th style={th}>PM</th>
+            <th style={styles.th}>{dateColumnKey || "Date"}</th> 
+            <th style={styles.th}>AM</th>
+            <th style={styles.th}>PM</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
             <tr key={i}>
-              <td style={tdc}>{dateColumnKey ? row[dateColumnKey] : "—"}</td> 
-              <td style={td}>{row.AM || "—"}</td>
-              <td style={td}>{row.PM || "—"}</td>
+              <td style={styles.tdc}>{dateColumnKey ? row[dateColumnKey] : "—"}</td> 
+              <td style={styles.td}>{row.AM || "—"}</td>
+              <td style={styles.td}>{row.PM || "—"}</td>
             </tr>
           ))}
         </tbody>

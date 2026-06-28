@@ -1,0 +1,72 @@
+import type { CSSProperties } from "react";
+
+
+export const thDate: CSSProperties = {  //headers that are dates
+  textAlign: "right",
+  fontSize: "0.6rem",
+  padding: "1px 2px",
+  whiteSpace: "nowrap",
+  lineHeight: 1.1,
+};
+
+export const thF: CSSProperties = { //headers 'focus' like 'bold'
+  textAlign: "center",
+  fontSize: "0.75rem",
+  padding: "1px 2px",
+  fontWeight: 700,
+};
+
+export const th: CSSProperties = {  //'normal ' headers
+  textAlign: "center",
+  fontSize: "0.7rem",
+  padding: "1px 2px",
+  lineHeight: 1.1,
+};
+
+export const tdDate: CSSProperties = {  //table data - dates
+  textAlign: "right",
+  fontSize: "0.72rem",
+  padding: "1px 2px",
+  lineHeight: 1.1,
+};
+
+export const tdF: CSSProperties = { //tabledata - 'bold'
+  textAlign: "center",
+  fontSize: "0.75rem",
+  padding: "1px 2px",
+  minWidth: "30px",  
+  fontWeight: 600,
+  lineHeight: 1.1,
+};
+
+export const td: CSSProperties = { //table data - ordinary - right align
+  textAlign: "right",
+  fontSize: "0.7rem",
+  padding: "1px 2px",
+  minWidth: "30px",
+};
+
+export const tdc: CSSProperties = { //table data - centered
+  textAlign: "center",
+  fontSize: "0.7rem",
+  padding: "1px 2px",
+};
+
+// Optional: wider date cell for expected bdate
+export const tdDateWide: CSSProperties = {
+  ...tdDate,
+  minWidth: "70px",
+  padding: "1px 1px ",
+  textAlign: "center"
+
+};
+
+export const tableContainer: CSSProperties = {
+  overflowX: "auto",
+  overflowY: "auto",
+  height: "100%",
+  border: "1px solid #0aeca8",
+  borderRadius: "4px",
+  padding: "0.25rem",
+  background: "var(--surface)",
+};
