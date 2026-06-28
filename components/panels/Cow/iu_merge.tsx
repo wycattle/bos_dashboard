@@ -1,121 +1,188 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import InputBox from "./InputBox";
 
-interface IuMergeRow {
-  wy_id: number;
-  typex: string;
-  datex: string;
-  readex: string | null;
-  try_num: number | null;
-  i_calf_num: number | null;
-  u_calf_num: number | null;
-  calf_num: number | null;
-  stop_date: string | null;
-  stop_num: number | null;
+interface SubItem {
+  label: string;
+  route: string;
 }
 
-export default function IuMergePanel() {
-  const searchParams = useSearchParams();
+interface Section {
+  label: string;
+  subItems: SubItem[];
+}
+
+const sections: Section[] = [
+  {
+    label: "Insem Related",
+    subItems: [
+      { label: "I_U_merge", route: "/cow/iu_merge" },
+      // add more insem sub‑items here
+    ],
+  },
+  {
+    label: "Milk Related",
+    subItems: [
+      // { label: "Milk Summary", route: "/cow/milk_summary" },
+    ],
+  },
+  {
+    label: "Something Else",
+    subItems: [
+      // { label: "Another Panel", route: "/cow/another" },
+    ],
+  },
+];
+
+export default function CowPanel() {
   const router = useRouter();
-  const wyIdFromUrl = searchParams.get("wy_id");
+  const searchParams = useSearchParams();
 
-  const [rows, setRows] = useState<IuMergeRow[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [currentWyId, setCurrentWyId] = useState("");
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
-  const fetchData = async (wyId: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(`/api/iu_merge?wy_id=${encodeURIComponent(wyId)}`);
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || `HTTP ${res.status}`);
-      }
-      const data: IuMergeRow[] = await res.json();
-      setRows(data);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      setError(message);
-      setRows([]);
-    } finally {
-      setLoading(false);
+  // Pre-fill wy_id from URL when navigating back
+  useEffect(() => {
+    const wyIdFromUrl = searchParams.get("wy_id");
+    if (wyIdFromUrl) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCurrentWyId(wyIdFromUrl);
     }
+  }, [searchParams]);
+
+  const handleWyIdSubmit = (wyId: string) => {
+    setCurrentWyId(wyId);
   };
 
-  useEffect(() => {
-    if (wyIdFromUrl) {
-      fetchData(wyIdFromUrl);
+  const handleSubItemClick = (route: string) => {
+    if (!currentWyId.trim()) {
+      alert("Please enter a WY ID first.");
+      return;
     }
-  }, [wyIdFromUrl]);
+    router.push(`${route}?wy_id=${encodeURIComponent(currentWyId)}`);
+  };
 
   return (
-    <div style={{ padding: "1rem" }}>
-      {/* Back button */}
-      <button
-         onClick={() => router.push(`/cow?wy_id=${encodeURIComponent(wyIdFromUrl || "")}`)}
+    <div
+      style={{
+        height: "100%",
+        overflow: "hidden",
+        padding: "2.5rem 0.5rem 0.5rem 0.5rem",
+        position: "relative",
+      }}
+    >
+      {/* Top bar with Home button only */}
+      <div
         style={{
-          padding: "0.3rem 0.7rem",
-          fontSize: "0.8rem",
-          fontWeight: 600,
-          background: "#1e293b",
-          color: "#f8fafc",
-          border: "1px solid #475569",
-          borderRadius: "6px",
-          cursor: "pointer",
-          marginBottom: "1rem",
+          position: "absolute",
+          top: "0.5rem",
+          left: "0.5rem",
+          zIndex: 10,
         }}
       >
-        ← Back to Cow Panel
-      </button>
+        <button
+          onClick={() => router.push("/")}
+          style={{
+            padding: "0.3rem 0.7rem",
+            fontSize: "0.8rem",
+            fontWeight: 600,
+            background: "#1e293b",
+            color: "#f8fafc",
+            border: "1px solid #475569",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+        >
+          ⌂ Home
+        </button>
+      </div>
 
-      <h2>IU Merge Panel</h2>
-      {!wyIdFromUrl && (
-        <p>No WY ID provided. Please go back and enter a WY ID first.</p>
-      )}
+      {/* Main content */}
+      <div style={{ overflow: "auto", height: "100%" }}>
+        {/* Input box always visible, pre-filled from URL */}
+        <InputBox onSubmit={handleWyIdSubmit} initialValue={currentWyId} />
+        {currentWyId && (
+          <p style={{ marginTop: "0.5rem", color: "var(--muted-foreground)" }}>
+            Current WY ID: {currentWyId}
+          </p>
+        )}
 
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
+        {/* Section buttons */}
+        <div
+          style={{
+            marginTop: "1.5rem",
+            display: "flex",
+            gap: "1rem",
+            justifyContent: "center",
+          }}
+        >
+          {sections.map((section) => (
+            <button
+              key={section.label}
+              onClick={() =>
+                setActiveSection(
+                  activeSection === section.label ? null : section.label
+                )
+              }
+              style={{
+                padding: "0.5rem 1rem",
+                fontSize: "1rem",
+                fontWeight: 600,
+                background:
+                  activeSection === section.label ? "#3b82f6" : "#1e293b",
+                color: "#f8fafc",
+                border: "1px solid #475569",
+                borderRadius: "8px",
+                cursor: "pointer",
+                transition: "background 0.2s",
+              }}
+            >
+              {section.label}
+            </button>
+          ))}
+        </div>
 
-      {rows.length > 0 && (
-        <table border={1} cellPadding={6} style={{ marginTop: "1rem", borderCollapse: "collapse", width: "100%" }}>
-          <thead>
-            <tr>
-              <th>WY ID</th>
-              <th>Type</th>
-              <th>Date</th>
-              <th>Read</th>
-              <th>Try#</th>
-              <th>I Calf#</th>
-              <th>U Calf#</th>
-              <th>Calf#</th>
-              <th>Stop Date</th>
-              <th>Stop#</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row, idx) => (
-              <tr key={idx}>
-                <td>{row.wy_id}</td>
-                <td>{row.typex}</td>
-                <td>{row.datex ? new Date(row.datex).toLocaleDateString() : ""}</td>
-                <td>{row.readex ?? ""}</td>
-                <td>{row.try_num ?? ""}</td>
-                <td>{row.i_calf_num ?? ""}</td>
-                <td>{row.u_calf_num ?? ""}</td>
-                <td>{row.calf_num ?? ""}</td>
-                <td>{row.stop_date ? new Date(row.stop_date).toLocaleDateString() : ""}</td>
-                <td>{row.stop_num ?? ""}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-
-      {rows.length === 0 && wyIdFromUrl && !loading && !error && (
-        <p>No records found for WY ID: {wyIdFromUrl}</p>
-      )}
+        {/* Sub‑item buttons for active section */}
+        {activeSection && (
+          <div
+            style={{
+              marginTop: "1rem",
+              display: "flex",
+              gap: "0.75rem",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {sections
+              .find((s) => s.label === activeSection)
+              ?.subItems.map((item) => (
+                <button
+                  key={item.route}
+                  onClick={() => handleSubItemClick(item.route)}
+                  style={{
+                    padding: "0.4rem 0.9rem",
+                    fontSize: "0.9rem",
+                    fontWeight: 500,
+                    background: "#334155",
+                    color: "#f8fafc",
+                    border: "1px solid #475569",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                >
+                  {item.label}
+                </button>
+              ))}
+            {sections.find((s) => s.label === activeSection)?.subItems
+              .length === 0 && (
+              <p style={{ color: "var(--muted-foreground)" }}>
+                No panels available yet.
+              </p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

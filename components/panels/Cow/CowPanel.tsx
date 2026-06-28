@@ -46,6 +46,7 @@ export default function CowPanel() {
   useEffect(() => {
     const wyIdFromUrl = searchParams.get("wy_id");
     if (wyIdFromUrl) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCurrentWyId(wyIdFromUrl);
     }
   }, [searchParams]);

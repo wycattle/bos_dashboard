@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 interface InputBoxProps {
   onSubmit?: (wyId: string) => void;
@@ -9,9 +9,9 @@ interface InputBoxProps {
 export default function InputBox({ onSubmit, initialValue = "" }: InputBoxProps) {
   const [wyId, setWyId] = useState(initialValue);
 
-  useEffect(() => {
-    setWyId(initialValue);
-  }, [initialValue]);
+  // useEffect(() => {
+  //   setWyId(initialValue);
+  // }, [initialValue]);
 
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
