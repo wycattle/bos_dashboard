@@ -13,8 +13,20 @@ interface TendayRow {
   [key: string]: string; // date columns e.g. "06-07"
 }
 
-const isDateCol = (k: string) => /^\d{2}-\d{2}$/.test(k); //regex /^\d{2}-\d{2}$/ filters 
-// for date column keys formatted exactly like two digits, a hyphen, two digits (e.g., "06-21").
+const isDateCol = (k: string) => /^\d{2}-\d{2}$/.test(k);
+
+const formatPct = (v: string | undefined) => {
+  if (v === undefined || v === "") return "—";
+  const n = Number(v);
+  if (Number.isNaN(n)) return "—";
+  const pct = (n * 100).toFixed(1) + "%";
+  return pct;
+};
+
+const formatDate = (v: string | undefined) => {
+  if (!v) return "—";
+  return String(v).slice(0, 10);
+};
 
 
 export default function TendayTable() {
@@ -111,10 +123,10 @@ export default function TendayTable() {
                 </td>
               ))}
               <td style={styles.tdF}>{row.avg || "—"}</td>
-              <td style={styles.tdF}>{row["pct chg from avg"] || "—"}</td>
+              <td style={styles.tdF}>{formatPct(row["pct chg from avg"])}</td>
               <td style={styles.td}>{row["days milking"] || "—"}</td>
               <td style={styles.td}>{row.u_read || "—"}</td>
-              <td style={styles.tdDate}>{row["expected bdate"] || "—"}</td>
+              <td style={styles.tdDate}>{formatDate(row["expected bdate"])}</td>
             </tr>
           ))}
           <tr
@@ -126,9 +138,9 @@ export default function TendayTable() {
                 {totalRow[d] || "—"}
               </td>
             ))}
-            <td colSpan={4} style={styles.tdF}>
-              {totalRow["pct chg from avg"] || ""}
-            </td>
+              <td colSpan={4} style={styles.tdF}>
+                {formatPct(totalRow["pct chg from avg"])}
+              </td>
             <td></td>
           </tr>
         </tbody>

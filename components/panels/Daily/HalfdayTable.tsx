@@ -47,6 +47,13 @@ export default function HalfdayTable() {
       ? Object.keys(rows[0]).find(k => k !== "AM" && k !== "PM") 
       : null;
 
+    const formatFloat1 = (v: string | undefined) => {
+      if (v === undefined || v === "") return "—";
+      const n = Number(v);
+      if (Number.isNaN(n)) return "—";
+      return n.toFixed(1);
+    };
+
   return (
     <div style={styles.tableContainer}>
       <h2 style={{ margin: "0 0 0.25rem 0", fontSize: "0.85rem" }}>
@@ -64,8 +71,8 @@ export default function HalfdayTable() {
           {rows.map((row, i) => (
             <tr key={i}>
               <td style={styles.tdc}>{dateColumnKey ? row[dateColumnKey] : "—"}</td> 
-              <td style={styles.td}>{row.AM || "—"}</td>
-              <td style={styles.td}>{row.PM || "—"}</td>
+              <td style={styles.td}>{formatFloat1(row.AM) || "—"}</td>
+              <td style={styles.td}>{formatFloat1(row.PM) || "—"}</td>
             </tr>
           ))}
         </tbody>

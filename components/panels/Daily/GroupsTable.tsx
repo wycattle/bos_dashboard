@@ -15,6 +15,18 @@ const knownFixedColumns = new Set([
   "expected bdate",
 ]);
 
+const formatPct = (v: string | undefined) => {
+  if (v === undefined || v === "") return "—";
+  const n = Number(v);
+  if (Number.isNaN(n)) return "—";
+  return (n * 100).toFixed(1) + "%";
+};
+
+const formatDate = (v: string | undefined) => {
+  if (!v) return "—";
+  return String(v).slice(0, 10);
+};
+
 export default function GroupsTable() {
   const [rows, setRows] = useState<DynamicRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -80,10 +92,10 @@ export default function GroupsTable() {
               <td style={styles.td}>{dateColumnKey ? row[dateColumnKey] : "—"}</td>
               <td style={styles.td}>{row.wy_id || "—"}</td>
               <td style={styles.tdF}>{row.avg || "—"}</td>
-              <td style={styles.tdF}>{row["pct chg from avg"] || "—"}</td>
+              <td style={styles.tdF}>{formatPct(row["pct chg from avg"]) }</td>
               <td style={styles.td}>{row["days milking"] || "—"}</td>
               <td style={styles.td}>{row.u_read || "—"}</td>
-              <td style={styles.tdDateWide}>{row["expected bdate"] || "—"}</td>
+              <td style={styles.tdDateWide}>{formatDate(row["expected bdate"] )}</td>
             </tr>
           ))}
         </tbody>
