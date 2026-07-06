@@ -18,15 +18,15 @@ export default function IuMergePanel() {
   const searchParams = useSearchParams();
   const wyId = searchParams.get("wy_id");
   const [rows, setRows] = useState<IuMergeRow[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(!wyId);
+    const [error, setError] = useState<string | null>(
+    wyId ? null : "Missing WY ID"
+  );
 
   useEffect(() => {
-    if (!wyId) {
-      setLoading(false);
-      setError("Missing WY ID");
+    if (!wyId) 
       return;
-    }
+    
 
     fetch(`/api/iu_merge?wy_id=${encodeURIComponent(wyId)}`)
       .then((res) => res.json())
