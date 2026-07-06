@@ -75,7 +75,11 @@ export default function TendayTable() {
 
   return (
     <div style={styles.tableContainer}>
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.25rem" }}>
+    <div style={{ 
+      display: "flex", 
+      justifyContent: "space-between", 
+      alignItems: "center", 
+      marginBottom: "0.25rem" }}>
       <h2 style={{ margin: 0, fontSize: "0.75rem", lineHeight: 1.2 }}>
         10‑Day Summary
       </h2>
@@ -87,7 +91,7 @@ export default function TendayTable() {
             fontSize: "0.7rem",
             background: "#1e293b",
             color: "#f8fafc",
-            border: "1px solid #475569",
+            border: "1px solid #69474c",
             borderRadius: "4px",
             cursor: "pointer",
             fontWeight: 600,
@@ -105,8 +109,8 @@ export default function TendayTable() {
                 {d}
               </th>
             ))}
-            <th style={styles.thF}>avg</th>
-            <th style={styles.thF}>pct chg</th>
+            <th style={styles.th}>avg</th>
+            <th style={styles.th}>pct chg</th>
             <th style={styles.th}>days</th>
             <th style={styles.th}>u_read</th>
             <th style={styles.tdDateWide}>exp bdate</th>
@@ -116,14 +120,14 @@ export default function TendayTable() {
 
           {dataRows.map((row, i) => (
             <tr key={i}>
-              <td style={styles.tdF}>{row.wy_id}</td>
+              <td style={styles.td}>{row.wy_id}</td>
               {dateCols.map((d) => (
                 <td key={d} style={styles.tdDate}>
                   {row[d] || "—"}
                 </td>
               ))}
-              <td style={styles.tdF}>{row.avg || "—"}</td>
-              <td style={styles.tdF}>{formatPct(row["pct chg from avg"])}</td>
+              <td style={styles.td}>{row.avg || "—"}</td>
+              <td style={styles.td}>{formatPct(row["pct chg from avg"])}</td>
               <td style={styles.td}>{row["days milking"] || "—"}</td>
               <td style={styles.td}>{row.u_read || "—"}</td>
               <td style={styles.tdDate}>{formatDate(row["expected bdate"])}</td>

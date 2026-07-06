@@ -7,6 +7,8 @@ export const thDate: CSSProperties = {  //headers that are dates
   padding: "1px 2px",
   whiteSpace: "nowrap",
   lineHeight: 1.1,
+  backgroundColor: "var(--bg)",
+  color: "var(--text)",
 };
 
 export const thF: CSSProperties = { //headers 'focus' like 'bold'
@@ -14,13 +16,19 @@ export const thF: CSSProperties = { //headers 'focus' like 'bold'
   fontSize: "0.75rem",
   padding: "1px 2px",
   fontWeight: 700,
+  backgroundColor: "var(--bg)",
+  color: "var(--text)",
+
 };
 
 export const th: CSSProperties = {  //'normal ' headers
   textAlign: "center",
   fontSize: "0.7rem",
-  padding: "1px 2px",
+  padding: "",
   lineHeight: 1.1,
+  backgroundColor: "var(--bg)",
+  color: "var(--text)",
+
 };
 
 export const tdDate: CSSProperties = {  //table data - dates
@@ -28,6 +36,9 @@ export const tdDate: CSSProperties = {  //table data - dates
   fontSize: "0.72rem",
   padding: "1px 2px",
   lineHeight: 1.1,
+  backgroundColor: "var(--bg)",
+  color: "var(--text)",
+
 };
 
 export const tdF: CSSProperties = { //tabledata - 'bold'
@@ -37,6 +48,9 @@ export const tdF: CSSProperties = { //tabledata - 'bold'
   minWidth: "30px",  
   fontWeight: 600,
   lineHeight: 1.1,
+  backgroundColor: "var(--bg)",
+  color: "var(--text)",
+
 };
 
 export const td: CSSProperties = { //table data - ordinary - right align
@@ -44,12 +58,18 @@ export const td: CSSProperties = { //table data - ordinary - right align
   fontSize: "0.7rem",
   padding: "1px 2px",
   minWidth: "30px",
+  backgroundColor: "var(--bg)",
+  color: "var(--text)",
+
 };
 
 export const tdc: CSSProperties = { //table data - centered
   textAlign: "center",
   fontSize: "0.7rem",
   padding: "1px 2px",
+  backgroundColor: "var(--bg)",
+  color: "var(--text)",
+
 };
 
 // Optional: wider date cell for expected bdate
@@ -57,7 +77,10 @@ export const tdDateWide: CSSProperties = {
   ...tdDate,
   minWidth: "70px",
   padding: "1px 1px ",
-  textAlign: "center"
+  textAlign: "center",
+  backgroundColor: "var(--bg)",
+  color: "var(--text)",
+
 
 };
 

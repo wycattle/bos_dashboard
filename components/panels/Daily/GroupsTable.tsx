@@ -79,8 +79,8 @@ export default function GroupsTable() {
           <tr>
             <th style={styles.th}>{dateColumnKey || "Date"}</th>
             <th style={styles.th}>WYid</th>
-            <th style={styles.thF}>avg</th>
-            <th style={styles.thF}>pct chg</th>
+            <th style={styles.th}>avg</th>
+            <th style={styles.th}>pct chg</th>
             <th style={styles.th}>days</th>
             <th style={styles.th}>u_read</th>
             <th style={styles.th}>exp bdate</th>
@@ -91,8 +91,8 @@ export default function GroupsTable() {
             <tr key={i}>
               <td style={styles.td}>{dateColumnKey ? row[dateColumnKey] : "—"}</td>
               <td style={styles.td}>{row.wy_id || "—"}</td>
-              <td style={styles.tdF}>{row.avg || "—"}</td>
-              <td style={styles.tdF}>{formatPct(row["pct chg from avg"]) }</td>
+              <td style={styles.td}>{row.avg || "—"}</td>
+              <td style={styles.td}>{formatPct(row["pct chg from avg"]) }</td>
               <td style={styles.td}>{row["days milking"] || "—"}</td>
               <td style={styles.td}>{row.u_read || "—"}</td>
               <td style={styles.tdDateWide}>{formatDate(row["expected bdate"] )}</td>

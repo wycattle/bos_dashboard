@@ -1,23 +1,37 @@
 /* === BOS Dashboard Theme Variables === */
 :root {
-  --background: #262c2f;
-  --foreground: #c9dadb;
+  color-scheme: dark;
+  
+  /* 1. Core Palette Definitions */
+  --background: #012222;
+  --foreground: #c7f0ea;
+  
+  /* 2. Core Layout Alignment (Bridges legacy variables to your theme tokens) */
+  --bg: var(--background);
+  --text: var(--foreground);
+  --card-bg: #1c4242; /* A slightly darker teal depth accent for side blocks */
+
+  /* 3. Layout Surfaces & Borders */
   --muted-foreground: #586359;
-  --surface: #fbfaf7;
-  --surface-strong: #392e19;
+  --surface: var(--background); 
+  --surface-strong: #1c4242;
   --surface-contrast: #243127;
-  --surface-border: #d9d3c6;
+  --surface-border: rgba(215, 238, 235, 0.2);
+  
+  /* 4. Action Modifiers & UI Elements */
   --accent: #344239;
   --accent-hover: #653d55;
   --accent-foreground: #f6f4ed;
   --danger: #b44a4a;
   --link: #a71717;
-  --table-header: #e8e1d3;
-  --table-row: #fbfaf7;
-  --table-row-alt: #f3eee4;
+  
+  /* 5. Context-Aware Table States */
+  --table-header: var(--background);
+  --table-row: var(--background);
+  --table-row-alt: #204c4c; /* Subtle darker striping variation for readability */
 }
 
-/* === Layout and Reset === */
+/* === Layout and Global Baseline Reset === */
 html {
   height: 100%;
 }
@@ -45,6 +59,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* === Global Form Control Inheritance === */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
 /* === Links === */
 a {
   color: var(--link);
@@ -55,22 +78,15 @@ a:hover {
   text-decoration: underline;
 }
 
-/* === Form Controls === */
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
-
-/* === App Layout === */
+/* === App Shell Layout Grid === */
 .app-shell {
   display: flex;
   min-height: 100vh;
   background: var(--background);
+  color: var(--foreground);
 }
 
-/* === wyid_inputbox === */
+/* === Navigation & Form Inputs Column Sidebar === */
 .app-wyid_inputbox {
   width: 280px;
   min-height: 100vh;
@@ -103,7 +119,6 @@ textarea {
   font-size: 1rem;
 }
 
-/* === Form Labels and Inputs === */
 .form-label {
   display: block;
   margin-bottom: 8px;
@@ -137,6 +152,10 @@ textarea {
   cursor: pointer;
 }
 
+.primary-button:hover {
+  background: var(--accent-hover);
+}
+
 .btn {
   padding: 1rem 2rem;
   font-size: 1.1rem;
@@ -149,11 +168,7 @@ textarea {
   width: 220px;
 }
 
-.primary-button:hover {
-  background: var(--accent-hover);
-}
-
-/* === Main Content Area === */
+/* === Main Dashboard Content Area === */
 .app-main {
   flex: 1;
   padding: 32px;
@@ -161,7 +176,6 @@ textarea {
   color: var(--foreground);
 }
 
-/* === Page Titles and Meta === */
 .page-title {
   margin-bottom: 8px;
   font-size: clamp(2.5rem, 4vw, 3.8rem);
@@ -179,7 +193,7 @@ textarea {
   color: var(--danger);
 }
 
-/* === Table Styles === */
+/* === Data Visualization Tables Structure === */
 .table-wrap {
   overflow-x: auto;
   margin-top: 18px;
@@ -225,7 +239,7 @@ textarea {
   background: var(--surface-strong);
 }
 
-/* === Responsive Layout === */
+/* === Responsive Breakpoints Viewports === */
 @media (max-width: 900px) {
   .app-shell {
     flex-direction: column;
@@ -240,11 +254,5 @@ textarea {
 
   .app-main {
     padding: 24px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
   }
 }
