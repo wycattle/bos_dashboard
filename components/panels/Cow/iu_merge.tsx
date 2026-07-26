@@ -31,14 +31,8 @@ export default function IuMergePanel({ wyId, embedded = false }: IuMergePanelPro
   );
 
   useEffect(() => {
-    if (!activeWyId) {
-      setError("Missing WY ID");
-      setLoading(false);
-      return;
-    }
+    if (!activeWyId) return;
 
-    setLoading(true);
-    setError(null);
 
     fetch(`/api/cow/iu_merge?wy_id=${encodeURIComponent(activeWyId)}`)
       .then((res) => res.json())

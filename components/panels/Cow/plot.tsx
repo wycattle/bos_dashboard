@@ -22,14 +22,7 @@ export default function NetRevenuePlotPanel({
   );
 
   useEffect(() => {
-    if (!activeWyId) {
-      setError("Missing WY ID");
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
+    if (!activeWyId) return; 
 
     fetch(`/api/cow/plots?wy_id=${encodeURIComponent(activeWyId)}`)
       .then((res) => {
