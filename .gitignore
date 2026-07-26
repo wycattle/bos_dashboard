@@ -19,6 +19,7 @@ requests
 .DS_Store
 *.pem
 *.gz
+*.log
 
 
 npm-debug.log*

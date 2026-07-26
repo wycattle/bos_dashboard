@@ -1,20 +1,37 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function NetRevenuePlotPanel() {
+interface NetRevenuePlotPanelProps {
+  wyId?: string;
+  embedded?: boolean;
+}
+
+export default function NetRevenuePlotPanel({
+  wyId,
+  embedded = false,
+}: NetRevenuePlotPanelProps) {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const wyId = searchParams.get("wy_id");
+  const activeWyId = wyId ?? searchParams.get("wy_id");
+
   const [imgUrl, setImgUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(!!wyId);
+  const [loading, setLoading] = useState(!!activeWyId);
   const [error, setError] = useState<string | null>(
-    wyId ? null : "Missing WY ID"
+    activeWyId ? null : "Missing WY ID"
   );
 
   useEffect(() => {
-    if (!wyId) return;
+    if (!activeWyId) {
+      setError("Missing WY ID");
+      setLoading(false);
+      return;
+    }
 
-    fetch(`/api/plots?wy_id=${encodeURIComponent(wyId)}`)
+    setLoading(true);
+    setError(null);
+
+    fetch(`/api/cow/plots?wy_id=${encodeURIComponent(activeWyId)}`)
       .then((res) => {
         if (!res.ok) throw new Error(`Status ${res.status}`);
         return res.json();
@@ -27,18 +44,60 @@ export default function NetRevenuePlotPanel() {
         setError(String(err));
         setLoading(false);
       });
-  }, [wyId]);
+  }, [activeWyId]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
-  if (!imgUrl) return <p>No plot found for WY ID: {wyId}</p>;
+  const backButton = !embedded && (
+    <button
+      onClick={() => router.push(`/cow?wy_id=${encodeURIComponent(activeWyId ?? "")}`)}
+      style={{
+        padding: "0.3rem 0.7rem",
+        fontSize: "0.8rem",
+        fontWeight: 600,
+        background: "#1e293b",
+        color: "#f8fafc",
+        border: "1px solid #475569",
+        borderRadius: "6px",
+        cursor: "pointer",
+        marginBottom: "1rem",
+      }}
+    >
+      ← Back to Cow Panel
+    </button>
+  );
+
+  const wrapperStyle = { padding: embedded ? "0.5rem" : "1rem" };
+
+  if (loading)
+    return (
+      <div style={wrapperStyle}>
+        {backButton}
+        <p>Loading...</p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div style={wrapperStyle}>
+        {backButton}
+        <p style={{ color: "red" }}>Error: {error}</p>
+      </div>
+    );
+
+  if (!imgUrl)
+    return (
+      <div style={wrapperStyle}>
+        {backButton}
+        <p>No plot found for WY ID: {activeWyId}</p>
+      </div>
+    );
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h2 style={{ color: "#f8fafc" }}>Net Revenue Plot for {wyId}</h2>
+    <div style={wrapperStyle}>
+      {backButton}
+      {!embedded && <h2 style={{ color: "#f8fafc" }}>Net Revenue Plot for {activeWyId}</h2>}
       <img
         src={imgUrl}
-        alt={`Net revenue plot for WY ${wyId}`}
+        alt={`Net revenue plot for WY ${activeWyId}`}
         style={{ maxWidth: "100%", border: "1px solid #475569" }}
       />
     </div>

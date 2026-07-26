@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "DATABASE_URL=$(secret-tool lookup service neon-db key conn_string) next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "dev:all": "concurrently \"cd ../../bos && python server.py\" \"next dev\""
+    "dev:all": "DATABASE_URL=$(secret-tool lookup service neon-db key conn_string) concurrently \"cd ../../bos && python server.py\" \"next dev\""
   },
+
   "engines": {
     "node": ">=20.19.0"
   },

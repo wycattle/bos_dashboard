@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface IuMergeRow {
   id: number;
@@ -14,21 +14,33 @@ interface IuMergeRow {
   try_num: string;
 }
 
-export default function IuMergePanel() {
+interface IuMergePanelProps {
+  wyId?: string;
+  embedded?: boolean;
+}
+
+export default function IuMergePanel({ wyId, embedded = false }: IuMergePanelProps) {
   const searchParams = useSearchParams();
-  const wyId = searchParams.get("wy_id");
+  const router = useRouter();
+  const activeWyId = wyId ?? searchParams.get("wy_id");
+
   const [rows, setRows] = useState<IuMergeRow[]>([]);
-  const [loading, setLoading] = useState(!wyId);
-    const [error, setError] = useState<string | null>(
-    wyId ? null : "Missing WY ID"
+  const [loading, setLoading] = useState(!!activeWyId);
+  const [error, setError] = useState<string | null>(
+    activeWyId ? null : "Missing WY ID"
   );
 
   useEffect(() => {
-    if (!wyId) 
+    if (!activeWyId) {
+      setError("Missing WY ID");
+      setLoading(false);
       return;
-    
+    }
 
-    fetch(`/api/iu_merge?wy_id=${encodeURIComponent(wyId)}`)
+    setLoading(true);
+    setError(null);
+
+    fetch(`/api/cow/iu_merge?wy_id=${encodeURIComponent(activeWyId)}`)
       .then((res) => res.json())
       .then((data) => {
         setRows(data);
@@ -38,16 +50,42 @@ export default function IuMergePanel() {
         setError(String(err));
         setLoading(false);
       });
-  }, [wyId]);
+  }, [activeWyId]);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
-  if (rows.length === 0) return <p>No records found for WY ID: {wyId}</p>;
+
+  if (error) {
+    return (
+      <div style={{ padding: embedded ? "0.5rem" : "1rem" }}>
+        <p style={{ color: "red" }}>Error: {error}</p>
+        {!embedded && (
+          <button
+            onClick={() => router.push("/cow")}
+            style={{
+              marginTop: "1rem",
+              padding: "0.4rem 0.9rem",
+              fontSize: "0.9rem",
+              fontWeight: 600,
+              background: "#1e293b",
+              color: "#f8fafc",
+              border: "1px solid #475569",
+              borderRadius: "8px",
+              cursor: "pointer",
+            }}
+          >
+            ← Back to Cow Panel
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  if (rows.length === 0) return <p>No records found for WY ID: {activeWyId}</p>;
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h2>I/U Merge Records for {wyId}</h2>
-      <table style={{ width: "30%", borderCollapse: "collapse" }}>
+    <div style={{ padding: embedded ? "0.5rem" : "1rem" }}>
+      {!embedded && <h2>I/U Merge Records for {activeWyId}</h2>}
+      <table style={{ width: embedded ? "100%" : "30%", borderCollapse: "collapse" }}>
         <thead>
           <tr style={{ background: "#1e293b", color: "#f8fafc" }}>
             <th style={{ textAlign: "right" }}>ID</th>
@@ -63,14 +101,14 @@ export default function IuMergePanel() {
         <tbody>
           {rows.map((row) => (
             <tr key={row.id} style={{ borderBottom: "1px solid #475569" }}>
-              <td style={{ textAlign: "right" }} >{row.id}</td>
-              <td style={{ textAlign: "right" }} >{row.datex?.split("T")[0]}</td> 
-              <td style={{ textAlign: "right" }} >{row.typex}</td>
-              <td style={{ textAlign: "right" }} >{row.i_calf_num}</td>
-              <td style={{ textAlign: "right" }} >{row.u_calf_num}</td>
-              <td style={{ textAlign: "right" }} >{row.stop_num}</td>
-              <td style={{ textAlign: "right" }} >{row.readex}</td>
-              <td style={{ textAlign: "right" }} >{row.try_num}</td>
+              <td style={{ textAlign: "right" }}>{row.id}</td>
+              <td style={{ textAlign: "right" }}>{row.datex?.split("T")[0]}</td>
+              <td style={{ textAlign: "right" }}>{row.typex}</td>
+              <td style={{ textAlign: "right" }}>{row.i_calf_num}</td>
+              <td style={{ textAlign: "right" }}>{row.u_calf_num}</td>
+              <td style={{ textAlign: "right" }}>{row.stop_num}</td>
+              <td style={{ textAlign: "right" }}>{row.readex}</td>
+              <td style={{ textAlign: "right" }}>{row.try_num}</td>
             </tr>
           ))}
         </tbody>
