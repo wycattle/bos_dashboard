@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 interface IuMergeRow {
-  id: number;
   wy_id: string;
   datex: string;
   typex: string;
   i_calf_num: string;
-  u_calf_num: string;
+  "u-calf_num": string;
+  calf_num: string;
+  stop_date: string;
   stop_num: string;
   readex: string;
   try_num: string;
@@ -33,10 +34,15 @@ export default function IuMergePanel({ wy_id, embedded = false }: IuMergePanelPr
   useEffect(() => {
     if (!activewy_id) return;
 
-
     fetch(`/api/cow/iu_merge?wy_id=${encodeURIComponent(activewy_id)}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
+        if (!Array.isArray(data)) {
+          throw new Error("Unexpected response shape from /api/cow/iu_merge");
+        }
         setRows(data);
         setLoading(false);
       })
@@ -82,7 +88,7 @@ export default function IuMergePanel({ wy_id, embedded = false }: IuMergePanelPr
       <table style={{ width: embedded ? "100%" : "30%", borderCollapse: "collapse" }}>
         <thead>
           <tr style={{ background: "#1e293b", color: "#f8fafc" }}>
-            <th style={{ textAlign: "right" }}>ID</th>
+            <th style={{ textAlign: "right" }}>WY ID</th>
             <th style={{ textAlign: "right" }}>Date</th>
             <th style={{ textAlign: "right" }}>Type</th>
             <th style={{ textAlign: "right" }}>I Calf</th>
@@ -93,13 +99,16 @@ export default function IuMergePanel({ wy_id, embedded = false }: IuMergePanelPr
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
-            <tr key={row.id} style={{ borderBottom: "1px solid #475569" }}>
-              <td style={{ textAlign: "right" }}>{row.id}</td>
+          {rows.map((row, i) => (
+            <tr
+              key={`${row.wy_id}-${row.datex}-${row.typex}-${i}`}
+              style={{ borderBottom: "1px solid #475569" }}
+            >
+              <td style={{ textAlign: "right" }}>{row.wy_id}</td>
               <td style={{ textAlign: "right" }}>{row.datex?.split("T")[0]}</td>
               <td style={{ textAlign: "right" }}>{row.typex}</td>
               <td style={{ textAlign: "right" }}>{row.i_calf_num}</td>
-              <td style={{ textAlign: "right" }}>{row.u_calf_num}</td>
+              <td style={{ textAlign: "right" }}>{row["u-calf_num"]}</td>
               <td style={{ textAlign: "right" }}>{row.stop_num}</td>
               <td style={{ textAlign: "right" }}>{row.readex}</td>
               <td style={{ textAlign: "right" }}>{row.try_num}</td>
