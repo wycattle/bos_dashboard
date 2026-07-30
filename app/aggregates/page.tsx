@@ -1,10 +1,5 @@
-"use client";
-import AggPanel from "@/components/panels/Aggregates/AggPanel";
+import { redirect } from "next/navigation";
 
-export default function AggregatesPage() {
-  return (
-    <div style={{ height: "100vh", overflow: "hidden" }}>
-      <AggPanel />
-    </div>
-  );
+export default function AggregatesIndexPage() {
+  redirect("/aggregates/allx");
 }

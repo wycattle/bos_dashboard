@@ -1,10 +1,13 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
+import { PanelHeader } from "../../shared/PanelHeader";
+import { DownloadXlsxButton } from "../../shared/DownloadXlsxButton";
+import * as styles from "../../shared/tableStyles";
 import { sortRows } from "@/utils/sortRows";
 import { SortableTh } from "@/utils/SortableTh";
 
 interface AllxRow {
-  WY_id: number;
+  wy_id: number;
   status?: string | null;
   last_stop_date?: string | null; // DATE
   stop_calf_num?: number | null;
@@ -23,6 +26,7 @@ interface AllxRow {
   i_check?: number | null;
   u_check1?: number | null;
   u_check2?: number | null;
+  updated?: string | null;  // DATE
   // index signature for any additional columns
   [key: string]: unknown;
 }
@@ -34,7 +38,7 @@ export default function AllxTable() {
   const [rows, setRows] = useState<AllxRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<SortKey>("WY_id");
+  const [sortKey, setSortKey] = useState<SortKey>("wy_id");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
 
   useEffect(() => {
@@ -84,13 +88,15 @@ export default function AllxTable() {
       <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>
     );
 
-  return (
-    <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
-      <h2 style={{ margin: "0 0 0.5rem 0", fontSize: "1rem" }}>Allx Data</h2>
-      <table className="data-table">
+    return (
+      <div style={styles.tableContainer}>
+        <PanelHeader title="Allx Table">
+          <DownloadXlsxButton rows={rows} filename="allx_table.xlsx" sheetName="sheet_1" />
+        </PanelHeader>
+        <table className="data-table">
         <thead>
           <tr>
-            {th("WY_id", "WY ID")}
+            {th("wy_id", "wy ID")}
             {th("status", "Status")}
             {th("last_stop_date", "Last Stop Date")}
             {th("stop_calf_num", "Stop Calf #")}
@@ -109,12 +115,13 @@ export default function AllxTable() {
             {th("i_check", "I Check")}
             {th("u_check1", "U Check 1")}
             {th("u_check2", "U Check 2")}
+            {th("updated", "updated")}            
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
             <tr key={i}>
-              {cell(row.WY_id)}
+              {cell(row.wy_id)}
               {cell(row.status)}
               {cell(row.last_stop_date)}
               {cell(row.stop_calf_num)}
@@ -133,6 +140,7 @@ export default function AllxTable() {
               {cell(row.i_check)}
               {cell(row.u_check1)}
               {cell(row.u_check2)}
+              {cell(row.updated)}              
             </tr>
           ))}
         </tbody>

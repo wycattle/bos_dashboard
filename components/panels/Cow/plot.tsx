@@ -3,28 +3,28 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface NetRevenuePlotPanelProps {
-  wyId?: string;
+  wy_id?: string;
   embedded?: boolean;
 }
 
 export default function NetRevenuePlotPanel({
-  wyId,
+  wy_id,
   embedded = false,
 }: NetRevenuePlotPanelProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const activeWyId = wyId ?? searchParams.get("wy_id");
+  const activewy_id = wy_id ?? searchParams.get("wy_id");
 
   const [imgUrl, setImgUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(!!activeWyId);
+  const [loading, setLoading] = useState(!!activewy_id);
   const [error, setError] = useState<string | null>(
-    activeWyId ? null : "Missing WY ID"
+    activewy_id ? null : "Missing WY ID"
   );
 
   useEffect(() => {
-    if (!activeWyId) return; 
+    if (!activewy_id) return; 
 
-    fetch(`/api/cow/plots?wy_id=${encodeURIComponent(activeWyId)}`)
+    fetch(`/api/cow/plots?wy_id=${encodeURIComponent(activewy_id)}`)
       .then((res) => {
         if (!res.ok) throw new Error(`Status ${res.status}`);
         return res.json();
@@ -37,11 +37,11 @@ export default function NetRevenuePlotPanel({
         setError(String(err));
         setLoading(false);
       });
-  }, [activeWyId]);
+  }, [activewy_id]);
 
   const backButton = !embedded && (
     <button
-      onClick={() => router.push(`/cow?wy_id=${encodeURIComponent(activeWyId ?? "")}`)}
+      onClick={() => router.push(`/cow?wy_id=${encodeURIComponent(activewy_id ?? "")}`)}
       style={{
         padding: "0.3rem 0.7rem",
         fontSize: "0.8rem",
@@ -80,17 +80,17 @@ export default function NetRevenuePlotPanel({
     return (
       <div style={wrapperStyle}>
         {backButton}
-        <p>No plot found for WY ID: {activeWyId}</p>
+        <p>No plot found for WY ID: {activewy_id}</p>
       </div>
     );
 
   return (
     <div style={wrapperStyle}>
       {backButton}
-      {!embedded && <h2 style={{ color: "#f8fafc" }}>Net Revenue Plot for {activeWyId}</h2>}
+      {!embedded && <h2 style={{ color: "#f8fafc" }}>Net Revenue Plot for {activewy_id}</h2>}
       <img
         src={imgUrl}
-        alt={`Net revenue plot for WY ${activeWyId}`}
+        alt={`Net revenue plot for WY ${activewy_id}`}
         style={{ maxWidth: "100%", border: "1px solid #475569" }}
       />
     </div>

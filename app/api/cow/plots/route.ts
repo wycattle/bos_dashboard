@@ -17,13 +17,13 @@ export async function GET(request: NextRequest) {
     });
 
     const { searchParams } = new URL(request.url);
-    const wyId = searchParams.get("wy_id");
+    const wy_id = searchParams.get("wy_id");
 
-    if (!wyId) {
+    if (!wy_id) {
       return NextResponse.json({ error: "Missing wy_id parameter" }, { status: 400 });
     }
 
-    const key = `plots/Net_Revenue/cow_${wyId}_net_revenue.png`;
+    const key = `plots/Net_Revenue/cow_${wy_id}_net_revenue.png`;
 
     const url = await getSignedUrl(
       s3,

@@ -7,6 +7,7 @@ export const thDate: CSSProperties = {  //headers that are dates
   padding: "1px 2px",
   whiteSpace: "nowrap",
   lineHeight: 1.1,
+  verticalAlign: "middle",  
   backgroundColor: "var(--bg)",
   color: "var(--text)",
 };
@@ -26,6 +27,7 @@ export const th: CSSProperties = {  //'normal ' headers
   fontSize: "0.7rem",
   padding: "",
   lineHeight: 1.1,
+  verticalAlign: "middle",
   backgroundColor: "var(--bg)",
   color: "var(--text)",
 
@@ -88,8 +90,27 @@ export const tableContainer: CSSProperties = {
   overflowX: "auto",
   overflowY: "auto",
   height: "100%",
+  width: "fit-content",
+  maxWidth: "100%",
   border: "1px solid #0aeca8",
   borderRadius: "4px",
   padding: "0.25rem",
   background: "var(--surface)",
+  whiteSpace: "normal",
+};
+
+export const tdSeparator: CSSProperties = {
+  ...td,
+  paddingLeft: "1.25rem",
+  borderLeft: "1px solid var(--surface-border)",
+  textAlign: "center",
+};
+
+export const thSeparator: CSSProperties = {
+  ...th,
+  paddingLeft: "1.25rem",
+  borderLeft: "1px solid var(--surface-border)",
+  whiteSpace: "normal",
+  width: "70px",
+  textAlign: "center",    
 };

@@ -2,31 +2,31 @@
 import React, { useState } from "react";
 
 interface InputBoxProps {
-  onSubmit?: (wyId: string) => void;
+  onSubmit?: (wy_id: string) => void;
   initialValue?: string;
 }
 
 export default function InputBox({ onSubmit, initialValue = "" }: InputBoxProps) {
-  const [wyId, setWyId] = useState(initialValue);
+  const [wy_id, setwy_id] = useState(initialValue);
 
   // useEffect(() => {
-  //   setWyId(initialValue);
+  //   setwy_id(initialValue);
   // }, [initialValue]);
 
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (wyId.trim() && onSubmit) {
-      onSubmit(wyId.trim());
+    if (wy_id.trim() && onSubmit) {
+      onSubmit(wy_id.trim());
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        WY_id:
+        wy_id:
         <input
-          value={wyId}
-          onChange={(e) => setWyId(e.target.value)}
+          value={wy_id}
+          onChange={(e) => setwy_id(e.target.value)}
         />
       </label>
       <button type="submit">Submit</button>

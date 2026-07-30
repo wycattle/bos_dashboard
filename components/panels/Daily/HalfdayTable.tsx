@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { PanelHeader } from "../../shared/PanelHeader";
+import { DownloadXlsxButton } from "../../shared/DownloadXlsxButton";
 import * as styles from "../../shared/tableStyles";
-// import { thDate, thFocus, thNorm, tdDate, tdFocus, tdNorm } from "../../shared/tableStyles";
 
 interface DynamicRow {
   [key: string]: string;
@@ -54,12 +55,12 @@ export default function HalfdayTable() {
       return n.toFixed(1);
     };
 
-  return (
-    <div style={styles.tableContainer}>
-      <h2 style={{ margin: "0 0 0.25rem 0", fontSize: "0.85rem" }}>
-        Half-Day Summary
-      </h2>
-      <table className="data-table">
+    return (
+      <div style={styles.tableContainer}>
+        <PanelHeader title="Half-day Summary">
+          <DownloadXlsxButton rows={rows} filename="halfday_summary.xlsx" sheetName="halfday" />
+        </PanelHeader>
+        <table className="data-table">
         <thead>
           <tr>
             <th style={styles.th}>{dateColumnKey || "Date"}</th> 

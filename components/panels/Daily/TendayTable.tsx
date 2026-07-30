@@ -1,7 +1,9 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
-import * as XLSX from "xlsx";
+import React, { useEffect, useState } from "react";
+import { PanelHeader } from "../../shared/PanelHeader";
+import { DownloadXlsxButton } from "../../shared/DownloadXlsxButton";
 import * as styles from "../../shared/tableStyles";
+import { getPctChgStyle } from "@/components/shared/formatters";
 
 interface TendayRow {
   wy_id: string;
@@ -13,26 +15,31 @@ interface TendayRow {
   [key: string]: string; // date columns e.g. "06-07"
 }
 
+type SortDirection = "asc" | "desc";
+
+const formatAvg = (v: string | undefined) => {
+  if (v === undefined || v === "") return "—";
+  const avg = Number(v);
+  if (Number.isNaN(avg)) return "—";
+  return avg.toFixed(1);
+};
+
 const isDateCol = (k: string) => /^\d{2}-\d{2}$/.test(k);
 
 const formatPct = (v: string | undefined) => {
   if (v === undefined || v === "") return "—";
   const n = Number(v);
   if (Number.isNaN(n)) return "—";
-  const pct = (n * 100).toFixed(1) + "%";
+  const pct = (n * 100).toFixed(0) + "%";
   return pct;
 };
-
-const formatDate = (v: string | undefined) => {
-  if (!v) return "—";
-  return String(v).slice(0, 10);
-};
-
 
 export default function TendayTable() {
   const [rows, setRows] = useState<TendayRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sortCol, setSortCol] = useState<string>("wy_id");
+  const [sortDir, setSortDir] = useState<SortDirection>("asc");
 
   useEffect(() => {
     fetch("/api/tenday")
@@ -50,15 +57,6 @@ export default function TendayTable() {
       });
   }, []);
 
-
-  const downloadXlsx = useCallback(() => {
-    if(!rows.length)return;
-    const ws = XLSX.utils.json_to_sheet(rows);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Tenday");
-    XLSX.writeFile(wb, "tenday_summary.xlsx");
-  },[rows]);
-
   if (loading) return <p style={{ padding: "1rem" }}>Loading…</p>;
   if (error)
     return (
@@ -69,56 +67,73 @@ export default function TendayTable() {
   // Extract date cols from first row, sorted
   const dateCols = Object.keys(rows[0]).filter(isDateCol).sort();
 
-  // Separate last row (totals) from data rows
+  // Separate last row (totals) from data rows — totals never sorts with the rest
   const dataRows = rows.slice(0, -1);
   const totalRow = rows[rows.length - 1];
 
+  const handleSort = (col: string) => {
+    if (sortCol === col) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortCol(col);
+      setSortDir(col === "wy_id" ? "asc" : "desc");
+    }
+  };
+
+  const sortedRows = [...dataRows].sort((a, b) => {
+    const av = parseFloat(a[sortCol]);
+    const bv = parseFloat(b[sortCol]);
+    const aVal = Number.isNaN(av) ? -Infinity : av;
+    const bVal = Number.isNaN(bv) ? -Infinity : bv;
+    const cmp = aVal - bVal;
+    return sortDir === "asc" ? cmp : -cmp;
+  });
+
+  const arrow = (col: string) =>
+    sortCol === col ? (sortDir === "asc" ? " ▲" : " ▼") : "";
+
   return (
     <div style={styles.tableContainer}>
-    <div style={{ 
-      display: "flex", 
-      justifyContent: "space-between", 
-      alignItems: "center", 
-      marginBottom: "0.25rem" }}>
-      <h2 style={{ margin: 0, fontSize: "0.75rem", lineHeight: 1.2 }}>
-        10‑Day Summary
-      </h2>
-
-      <button
-          onClick={downloadXlsx}
-          style={{
-            padding: "0.2rem 0.5rem",
-            fontSize: "0.7rem",
-            background: "#1e293b",
-            color: "#f8fafc",
-            border: "1px solid #69474c",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontWeight: 600,
-          }}
-        >
-          ⬇ XLSX
-        </button>
-      </div>
+      <PanelHeader title="10‑Day Summary">
+        <DownloadXlsxButton rows={rows} filename="tenday_summary.xlsx" sheetName="Tenday" />
+      </PanelHeader>
       <table className="data-table">
         <thead>
           <tr>
-            <th style={styles.th}>wy_id</th>
+            <th
+              style={{ ...styles.th, cursor: "pointer" }}
+              onClick={() => handleSort("wy_id")}
+            >
+              wy_id{arrow("wy_id")}
+            </th>
             {dateCols.map((d) => (
-              <th key={d} style={styles.thDate}>
+              <th
+                key={d}
+                style={{ ...styles.thDate, cursor: "pointer" }}
+                onClick={() => handleSort(d)}
+              >
                 {d}
+                {arrow(d)}
               </th>
             ))}
-            <th style={styles.th}>avg</th>
-            <th style={styles.th}>pct chg</th>
-            <th style={styles.th}>days</th>
-            <th style={styles.th}>u_read</th>
-            <th style={styles.tdDateWide}>exp bdate</th>
+            <th
+              style={{ ...styles.thSeparator, cursor: "pointer" }}
+              onClick={() => handleSort("avg")}
+            >
+              avg{arrow("avg")}
+            </th>
+            <th
+              style={{ ...styles.thSeparator, cursor: "pointer" }}
+              onClick={() => handleSort("pct chg from avg")}
+            >
+              <div style={{ maxWidth: "50px", whiteSpace: "normal", margin: "0 auto" }}>
+                pct chg from avg{arrow("pct chg from avg")}
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
-
-          {dataRows.map((row, i) => (
+          {sortedRows.map((row, i) => (
             <tr key={i}>
               <td style={styles.td}>{row.wy_id}</td>
               {dateCols.map((d) => (
@@ -126,11 +141,10 @@ export default function TendayTable() {
                   {row[d] || "—"}
                 </td>
               ))}
-              <td style={styles.td}>{row.avg || "—"}</td>
-              <td style={styles.td}>{formatPct(row["pct chg from avg"])}</td>
-              <td style={styles.td}>{row["days milking"] || "—"}</td>
-              <td style={styles.td}>{row.u_read || "—"}</td>
-              <td style={styles.tdDate}>{formatDate(row["expected bdate"])}</td>
+              <td style={styles.tdSeparator}>{formatAvg(row["avg"])}</td>
+              <td style={{ ...styles.td, ...getPctChgStyle(row["pct chg from avg"]) }}>
+  {formatPct(row["pct chg from avg"])}
+</td>
             </tr>
           ))}
           <tr
@@ -142,9 +156,9 @@ export default function TendayTable() {
                 {totalRow[d] || "—"}
               </td>
             ))}
-              <td colSpan={4} style={styles.tdF}>
-                {formatPct(totalRow["pct chg from avg"])}
-              </td>
+            <td colSpan={4} style={styles.tdF}>
+              {formatPct(totalRow["pct chg from avg"])}
+            </td>
             <td></td>
           </tr>
         </tbody>

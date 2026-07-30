@@ -6,9 +6,9 @@ export async function GET() {
     const sql = neon(process.env.DATABASE_URL!);
     const rows = await sql`
       SELECT
-        "WY_id",
+        "wy_id",
         status,
-        to_char(last_stop_date,  'YYYY-MM-DD') AS last_stop_date,
+        to_char("last_stop_date",  'YYYY-MM-DD') AS last_stop_date,
         stop_calf_num,
         to_char(last_calf_bdate, 'YYYY-MM-DD') AS last_calf_bdate,
         last_calf_num,
@@ -24,12 +24,13 @@ export async function GET() {
         to_char(exp_drydate,     'YYYY-MM-DD') AS exp_drydate,
         i_check,
         u_check1,
-        u_check2
-      FROM allx
+        u_check2,
+        to_char(updated, 'YYYY-MM-DD HH24:MI:SS') AS updated
+      FROM allx_formatted
     `;
     return NextResponse.json(rows);
   } catch (err) {
-    console.error("API /api/aggregates/allx error:", err);
+    console.error("API /api/aggregates/allx_formatted error:", err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

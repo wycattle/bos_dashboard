@@ -5,16 +5,16 @@ export async function GET(request: NextRequest) {
   try {
     const sql = neon(process.env.DATABASE_URL!);
     const { searchParams } = new URL(request.url);
-    const wyId = searchParams.get("wy_id");
+    const wy_id = searchParams.get("wy_id");
 
-    if (!wyId) {
+    if (!wy_id) {
       return NextResponse.json({ error: "Missing wy_id parameter" }, { status: 400 });
     }
 
     const rows = await sql`
       SELECT *
-      FROM iu_merge
-      WHERE wy_id = ${wyId}
+      FROM iu_merge_formatted
+      WHERE wy_id = ${wy_id}
       ORDER BY datex
     `;
     return NextResponse.json(rows);

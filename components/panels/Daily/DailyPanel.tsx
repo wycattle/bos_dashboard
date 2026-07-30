@@ -48,12 +48,12 @@ export default function DailyPanel() {
         </button>
       </div>
 
-      {/* Tenday – left column */}
+      {/* Tenday  */}
       <div style={{ overflow: "hidden", minHeight: 0 }}>
         <TendayTable />
       </div>
 
-      {/* Halfday – middle column (auto width, shrinks to content) */}
+      {/* Halfday  */}
       <div
         style={{
           overflow: "hidden",
@@ -66,7 +66,7 @@ export default function DailyPanel() {
         <HalfdayTable />
       </div>
 
-      {/* Groups – right column */}
+      {/* Groups */}
       <div style={{ overflow: "hidden", minHeight: 0 }}>
         <GroupsTable />
       </div>

@@ -9,19 +9,19 @@ export default function CowPanel() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [currentWyId, setCurrentWyId] = useState("");
+  const [currentwy_id, setCurrentwy_id] = useState("");
 
   useEffect(() => {
-    const wyIdFromUrl = searchParams.get("wy_id");
-    if (wyIdFromUrl) {
+    const wy_idFromUrl = searchParams.get("wy_id");
+    if (wy_idFromUrl) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCurrentWyId(wyIdFromUrl);
+      setCurrentwy_id(wy_idFromUrl);
     }
   }, [searchParams]);
 
-  const handleWyIdSubmit = (wyId: string) => {
-    setCurrentWyId(wyId);
-    router.push(`/cow?wy_id=${encodeURIComponent(wyId)}`);
+  const handlewy_idSubmit = (wy_id: string) => {
+    setCurrentwy_id(wy_id);
+    router.push(`/cow?wy_id=${encodeURIComponent(wy_id)}`);
   };
 
   return (
@@ -52,15 +52,15 @@ export default function CowPanel() {
       </div>
 
       <div style={{ overflow: "auto", height: "100%" }}>
-        <InputBox onSubmit={handleWyIdSubmit} initialValue={currentWyId} />
+        <InputBox onSubmit={handlewy_idSubmit} initialValue={currentwy_id} />
 
-        {currentWyId && (
+        {currentwy_id && (
           <p style={{ marginTop: "0.5rem", color: "var(--muted-foreground)" }}>
-            Current WY ID: {currentWyId}
+            Current WY ID: {currentwy_id}
           </p>
         )}
 
-    {currentWyId && (
+    {currentwy_id && (
       <div
         style={{
           marginTop: "1.5rem",
@@ -83,13 +83,13 @@ export default function CowPanel() {
           }}
         >
           <Suspense fallback={<p>Loading...</p>}>
-            <IuMergePanel wyId={currentWyId} embedded />
+            <IuMergePanel wy_id={currentwy_id} embedded />
           </Suspense>
         </div>
 
         <div style={{ flex: "1 1 620px", maxWidth: "700px" }}>
           <Suspense fallback={<p>Loading...</p>}>
-            <PlotPanel wyId={currentWyId} embedded />
+            <PlotPanel wy_id={currentwy_id} embedded />
           </Suspense>
         </div>
       </div>

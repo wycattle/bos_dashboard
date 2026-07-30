@@ -28,7 +28,7 @@
   /* 5. Context-Aware Table States */
   --table-header: var(--background);
   --table-row: var(--background);
-  --table-row-alt: #204c4c; /* Subtle darker striping variation for readability */
+  --table-row-alt: #142f2f; /* Subtle darker striping variation for readability */
 }
 
 /* === Layout and Global Baseline Reset === */
@@ -87,7 +87,7 @@ a:hover {
 }
 
 /* === Navigation & Form Inputs Column Sidebar === */
-.app-wyid_inputbox {
+.app-wy_id_inputbox {
   width: 280px;
   min-height: 100vh;
   padding: 28px 22px;
@@ -96,25 +96,25 @@ a:hover {
   border-right: 1px solid var(--surface-border);
 }
 
-.app-wyid_inputbox h2 {
+.app-wy_id_inputbox h2 {
   margin-bottom: 18px;
   font-size: 2.2rem;
   line-height: 1.05;
 }
 
-.app-wyid_inputbox nav {
+.app-wy_id_inputbox nav {
   margin-bottom: 42px;
 }
 
-.app-wyid_inputbox ul {
+.app-wy_id_inputbox ul {
   list-style: none;
 }
 
-.app-wyid_inputbox li + li {
+.app-wy_id_inputbox li + li {
   margin-top: 8px;
 }
 
-.app-wyid_inputbox a {
+.app-wy_id_inputbox a {
   color: var(--link);
   font-size: 1rem;
 }
@@ -215,7 +215,7 @@ a:hover {
 
 .data-table th,
 .data-table td {
-  padding: 14px 14px;
+  padding: 5px 5px;
   border-bottom: 1px solid var(--surface-border);
   text-align: left;
   vertical-align: top;
@@ -245,7 +245,7 @@ a:hover {
     flex-direction: column;
   }
 
-  .app-wyid_inputbox {
+  .app-wy_id_inputbox {
     width: 100%;
     min-height: auto;
     border-right: none;
@@ -255,4 +255,40 @@ a:hover {
   .app-main {
     padding: 24px;
   }
+}
+
+.tab-button {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.tab-button:hover {
+  background: #293548;
+}
+
+.tab-button.active {
+  background: #334155;
+  border-color: #94a3b8;
+}
+
+.xlsx-button {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #69474c;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.xlsx-button:hover {
+  background: #334155; /* pick whatever hover shade you like — bonus you didn't have before */
 }

@@ -5,11 +5,11 @@
  * Intended final purpose:
  *   Receive a POST trigger from Apps Script. Read the `am_liters`, `am_wy`,
  *   `pm_liters`, and `pm_wy` tables from Neon, compute fullday totals per
- *   (date, WY_id) by combining AM and PM half-day records, then upsert the
+ *   (date, wy_id) by combining AM and PM half-day records, then upsert the
  *   aggregated results into a `fullday` table in Neon.
  *
  * Current state: tail-only compute — recomputes only the last 30 distinct dates
- * from am_liters, accumulates liters per (date, WY_id) across AM and PM, then
+ * from am_liters, accumulates liters per (date, wy_id) across AM and PM, then
  * upserts those rows into the fullday table. Historical rows are never touched.
  */
 
@@ -52,7 +52,7 @@ export async function POST() {
       sql`SELECT * FROM pm_liters WHERE date = ANY(${tailDates}) ORDER BY date`,
     ]);
 
-    // Step 3: accumulate liters per (date, WY_id)
+    // Step 3: accumulate liters per (date, wy_id)
     const totals = new Map<string, Map<string, number>>();
 
     function accumulate(
@@ -69,11 +69,11 @@ export async function POST() {
 
         for (const col of Object.keys(wyRow)) {
           if (col === "date") continue;
-          const wyId = wyRow[col];
+          const wy_id = wyRow[col];
           const liters = litRow[col];
-          if (wyId == null || liters == null) continue;
+          if (wy_id == null || liters == null) continue;
 
-          const wyKey = String(wyId);
+          const wyKey = String(wy_id);
           const litVal = Number(liters);
           if (isNaN(litVal)) continue;
 
@@ -97,8 +97,8 @@ export async function POST() {
     let rows_upserted = 0;
     for (const [date, byWy] of totals.entries()) {
       const data: Record<string, number> = {};
-      for (const [wyId, total] of byWy.entries()) {
-        data[wyId] = Math.round(total * 100) / 100;
+      for (const [wy_id, total] of byWy.entries()) {
+        data[wy_id] = Math.round(total * 100) / 100;
       }
       await sql`
         INSERT INTO fullday (date, data)

@@ -15,26 +15,26 @@ interface IuMergeRow {
 }
 
 interface IuMergePanelProps {
-  wyId?: string;
+  wy_id?: string;
   embedded?: boolean;
 }
 
-export default function IuMergePanel({ wyId, embedded = false }: IuMergePanelProps) {
+export default function IuMergePanel({ wy_id, embedded = false }: IuMergePanelProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const activeWyId = wyId ?? searchParams.get("wy_id");
+  const activewy_id = wy_id ?? searchParams.get("wy_id");
 
   const [rows, setRows] = useState<IuMergeRow[]>([]);
-  const [loading, setLoading] = useState(!!activeWyId);
+  const [loading, setLoading] = useState(!!activewy_id);
   const [error, setError] = useState<string | null>(
-    activeWyId ? null : "Missing WY ID"
+    activewy_id ? null : "Missing WY ID"
   );
 
   useEffect(() => {
-    if (!activeWyId) return;
+    if (!activewy_id) return;
 
 
-    fetch(`/api/cow/iu_merge?wy_id=${encodeURIComponent(activeWyId)}`)
+    fetch(`/api/cow/iu_merge?wy_id=${encodeURIComponent(activewy_id)}`)
       .then((res) => res.json())
       .then((data) => {
         setRows(data);
@@ -44,7 +44,7 @@ export default function IuMergePanel({ wyId, embedded = false }: IuMergePanelPro
         setError(String(err));
         setLoading(false);
       });
-  }, [activeWyId]);
+  }, [activewy_id]);
 
   if (loading) return <p>Loading...</p>;
 
@@ -74,11 +74,11 @@ export default function IuMergePanel({ wyId, embedded = false }: IuMergePanelPro
     );
   }
 
-  if (rows.length === 0) return <p>No records found for WY ID: {activeWyId}</p>;
+  if (rows.length === 0) return <p>No records found for WY ID: {activewy_id}</p>;
 
   return (
     <div style={{ padding: embedded ? "0.5rem" : "1rem" }}>
-      {!embedded && <h2>I/U Merge Records for {activeWyId}</h2>}
+      {!embedded && <h2>I/U Merge Records for {activewy_id}</h2>}
       <table style={{ width: embedded ? "100%" : "30%", borderCollapse: "collapse" }}>
         <thead>
           <tr style={{ background: "#1e293b", color: "#f8fafc" }}>

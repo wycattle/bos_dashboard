@@ -44,8 +44,8 @@ export default function FulldayTable() {
     [sortKey],
   );
 
-  // Collect all WY_ids across every row, sorted numerically
-  const wyIds = useMemo(() => {
+  // Collect all wy_ids across every row, sorted numerically
+  const wy_ids = useMemo(() => {
     const idSet = new Set<string>();
     rows.forEach((row) => {
       if (row.data) Object.keys(row.data).forEach((id) => idSet.add(id));
@@ -91,7 +91,7 @@ export default function FulldayTable() {
               sortDir={sortDir}
               onSort={handleSort}
             />
-            {wyIds.map((id) => (
+            {wy_ids.map((id) => (
               <SortableTh
                 key={id}
                 label={`WY ${id}`}
@@ -107,7 +107,7 @@ export default function FulldayTable() {
           {sorted.map((row, i) => (
             <tr key={i}>
               <td style={{ textAlign: "center" }}>{String(row.date).slice(0, 10)}</td>
-              {wyIds.map((id) => (
+              {wy_ids.map((id) => (
                 <td key={id} style={{ textAlign: "right" }}>
                   {row.data?.[id] != null
                     ? Number(row.data[id]).toFixed(1)
