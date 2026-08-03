@@ -1,22 +1,16 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { navButtonStyle } from "@/components/shared/tableStyles";
 import InputBox from "@/components/shared/InputBox";
 import Tables from "@/components/panels/Cow/tables";
 
-export default function CowTablesPage() {
+function CowTablesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [wy_id, setWy_id] = useState("");
-
-  useEffect(() => {
-    const id = searchParams.get("wy_id");
-    if (id) setWy_id(id);
-  }, [searchParams]);
+  const wy_id = searchParams.get("wy_id") ?? "";
 
   const handleSubmit = (id: string) => {
-    setWy_id(id);
     router.push(`/cow/tables?wy_id=${encodeURIComponent(id)}`);
   };
 
@@ -28,9 +22,17 @@ export default function CowTablesPage() {
       </div>
 
       <div style={{ overflow: "auto", height: "100%" }}>
-        <InputBox onSubmit={handleSubmit} initialValue={wy_id} placeholder="Enter WY ID" />
+        <InputBox key={wy_id} onSubmit={handleSubmit} initialValue={wy_id} placeholder="Enter WY ID" />
         {wy_id && <Tables wy_id={wy_id} embedded />}
       </div>
     </div>
+  );
+}
+
+export default function CowTablesPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CowTablesContent />
+    </Suspense>
   );
 }
