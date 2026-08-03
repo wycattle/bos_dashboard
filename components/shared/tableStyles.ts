@@ -114,3 +114,15 @@ export const thSeparator: CSSProperties = {
   width: "70px",
   textAlign: "center",    
 };
+
+
+export const navButtonStyle: CSSProperties = {
+  padding: "0.5rem 1rem",
+  fontSize: "1rem",
+  fontWeight: 600,
+  background: "var(--accent)",
+  color: "var(--accent-foreground)",
+  border: "1px solid var(--surface-border)",
+  borderRadius: "6px",
+  cursor: "pointer",
+};

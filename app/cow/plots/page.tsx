@@ -1,0 +1,36 @@
+"use client";
+import React, { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { navButtonStyle } from "@/components/shared/tableStyles";
+import InputBox from "@/components/shared/InputBox";
+import PlotTable from "@/components/panels/Cow/plots";
+
+export default function CowPlotsPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [wy_id, setWy_id] = useState("");
+
+  useEffect(() => {
+    const id = searchParams.get("wy_id");
+    if (id) setWy_id(id);
+  }, [searchParams]);
+
+  const handleSubmit = (id: string) => {
+    setWy_id(id);
+    router.push(`/cow/plots?wy_id=${encodeURIComponent(id)}`);
+  };
+
+  return (
+    <div style={{ height: "100%", overflow: "hidden", padding: "2.5rem 0.5rem 0.5rem 0.5rem", position: "relative" }}>
+      <div style={{ position: "absolute", top: "0.5rem", left: "0.5rem", zIndex: 10, display: "flex", gap: "0.5rem" }}>
+        <button onClick={() => router.push("/cow")} style={navButtonStyle}>← Cow</button>
+        <button onClick={() => router.push("/")} style={navButtonStyle}>⌂ Home</button>
+      </div>
+
+      <div style={{ overflow: "auto", height: "100%" }}>
+        <InputBox onSubmit={handleSubmit} initialValue={wy_id} placeholder="Enter WY ID" />
+        {wy_id && <PlotTable wy_id={wy_id} embedded />}
+      </div>
+    </div>
+  );
+}
