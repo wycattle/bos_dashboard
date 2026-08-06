@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense } from "react";
-import PlotPanel from "./plot";
+import PlotPanel from "./plot_net_revenue";
 
 export default function PlotTable({ wy_id, embedded }: { wy_id: string; embedded?: boolean }) {
   return (

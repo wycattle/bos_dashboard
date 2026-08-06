@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Missing wy_id parameter" }, { status: 400 });
     }
 
-    const key = `plots/Net_Revenue/cow_${wy_id}_net_revenue.png`;
+    const key = `plots/plot_net_revenue/cow_${wy_id}_net_revenue.png`;
 
     const url = await getSignedUrl(
       s3,
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ url });
   } catch (err) {
-    console.error("API /api/cow/plots error:", err);
+    console.error("API /api/cow/plots/plot_net_revenue error:", err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

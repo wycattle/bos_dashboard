@@ -2,15 +2,15 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-interface NetRevenuePlotPanelProps {
+interface LactationPlotsPanelProps {
   wy_id?: string;
   embedded?: boolean;
 }
 
-export default function NetRevenuePlotPanel({
+export default function LactationPlotsPanel({
   wy_id,
   embedded = false,
-}: NetRevenuePlotPanelProps) {
+}: LactationPlotsPanelProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const activewy_id = wy_id ?? searchParams.get("wy_id");
@@ -22,9 +22,9 @@ export default function NetRevenuePlotPanel({
   );
 
   useEffect(() => {
-    if (!activewy_id) return; 
+    if (!activewy_id) return;
 
-    fetch(`/api/cow/plots?wy_id=${encodeURIComponent(activewy_id)}`)
+    fetch(`/api/cow/lactation_plot?wy_id=${encodeURIComponent(activewy_id)}`)
       .then((res) => {
         if (!res.ok) throw new Error(`Status ${res.status}`);
         return res.json();
@@ -80,17 +80,17 @@ export default function NetRevenuePlotPanel({
     return (
       <div style={wrapperStyle}>
         {backButton}
-        <p>No plot found for WY ID: {activewy_id}</p>
+        <p>No lactation plot found for WY ID: {activewy_id}</p>
       </div>
     );
 
   return (
     <div style={wrapperStyle}>
       {backButton}
-      {!embedded && <h2 style={{ color: "#f8fafc" }}>Net Revenue Plot for {activewy_id}</h2>}
+      {!embedded && <h2 style={{ color: "#f8fafc" }}>Lactation Curves for {activewy_id}</h2>}
       <img
         src={imgUrl}
-        alt={`Net revenue plot for WY ${activewy_id}`}
+        alt={`Lactation curves for WY ${activewy_id}`}
         style={{ maxWidth: "100%", border: "1px solid #475569" }}
       />
     </div>
