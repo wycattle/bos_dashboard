@@ -1,3 +1,4 @@
+/** components/panels/Cow/tables/iu_merge.tsx */
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -60,7 +61,7 @@ export default function IuMergePanel({ wy_id, embedded = false }: IuMergePanelPr
         <p style={{ color: "red" }}>Error: {error}</p>
         {!embedded && (
           <button
-            onClick={() => router.push("/cow")}
+            onClick={() => router.push("tables")}
             style={{
               marginTop: "1rem",
               padding: "0.4rem 0.9rem",

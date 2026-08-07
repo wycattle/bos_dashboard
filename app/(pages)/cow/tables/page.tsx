@@ -1,9 +1,10 @@
+/** app/(pages)/cow/tables/page.tsx */
 "use client";
 import React, { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { navButtonStyle } from "@/components/shared/tableStyles";
 import InputBox from "@/components/shared/InputBox";
-import Tables from "@/components/panels/Cow/tables";
+import Tables from "@/components/panels/Cow/tables/cow_panel_tables";
 
 function CowTablesContent() {
   const router = useRouter();

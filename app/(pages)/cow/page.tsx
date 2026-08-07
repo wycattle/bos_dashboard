@@ -1,3 +1,4 @@
+/** app/(pages)/cow/page.tsx */
 "use client";
 import { Suspense } from "react";
 import CowPanel from "@/components/panels/Cow/CowPanel";

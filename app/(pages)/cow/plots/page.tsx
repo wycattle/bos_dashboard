@@ -1,18 +1,18 @@
-/** app/(pages)/cow/plots/lactation_plot/page.tsx */
+/** app/(pages)/cow/plots/page.tsx */
 "use client";
 import React, { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { navButtonStyle } from "@/components/shared/tableStyles";
 import InputBox from "@/components/shared/InputBox";
-import LactationPlotsPanel from "@/components/panels/Cow/plot_lactations";
+import PlotTable from "@/components/panels/Cow/plots/cow_panel_plots";
 
-function CowLactationPlotContent() {
+function CowPlotsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const wy_id = searchParams.get("wy_id") ?? "";
 
   const handleSubmit = (id: string) => {
-    router.push(`/cow/plots/lactation_plot?wy_id=${encodeURIComponent(id)}`);
+    router.push(`/cow/plots?wy_id=${encodeURIComponent(id)}`);
   };
 
   return (
@@ -24,20 +24,16 @@ function CowLactationPlotContent() {
 
       <div style={{ overflow: "auto", height: "100%" }}>
         <InputBox key={wy_id} onSubmit={handleSubmit} initialValue={wy_id} placeholder="Enter WY ID" />
-        {wy_id && (
-          <Suspense fallback={<div>Loading...</div>}>
-            <LactationPlotsPanel wy_id={wy_id} embedded />
-          </Suspense>
-        )}
+        {wy_id && <PlotTable wy_id={wy_id} embedded />}
       </div>
     </div>
   );
 }
 
-export default function CowLactationPlotPage() {
+export default function CowPlotsPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <CowLactationPlotContent />
+      <CowPlotsContent />
     </Suspense>
   );
 }
