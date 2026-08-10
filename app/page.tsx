@@ -1,3 +1,4 @@
+/** app/page.tsx */
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -44,7 +45,7 @@ export default function Home() {
           Daily Data
         </button>
         <button className="btn" onClick={() => router.push("/aggregates")}>
-          Aggregates
+          aggregates
         </button>
         <button className="btn" onClick={() => router.push("/cow")}>
           Individual Cow

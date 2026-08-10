@@ -1,3 +1,4 @@
+/** components/panels/Aggregates/UltrasoundTable.tsx */
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
 import { PanelHeader } from "../../shared/PanelHeader";

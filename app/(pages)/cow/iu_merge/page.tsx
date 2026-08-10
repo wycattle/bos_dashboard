@@ -1,14 +1,11 @@
-/** app/(pages)/cow/iu_merge/page.tsx  */
-"use client";
-import { Suspense } from "react";
-import IuMergePanel from "@/components/panels/Cow/tables/iu_merge";
+/** app/(pages)/cow/iu_merge/page.tsx */
+import IuMergeTable from "@/components/panels/Cow/tables/iu_merge";
 
-export default function IuMergePage() {
-  return (
-    <div style={{ height: "100vh", overflow: "hidden" }}>
-      <Suspense fallback={<p>Loading...</p>}>
-        <IuMergePanel />
-      </Suspense>
-    </div>
-  );
+export default async function CowIuMergePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ wy_id?: string }>;
+}) {
+  const { wy_id } = await searchParams;
+  return <IuMergeTable wy_id={wy_id ?? ""} embedded />;
 }

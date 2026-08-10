@@ -96,7 +96,7 @@ function LactationPlotsPanel({
   );
 }
 
-export default function PlotTable({
+export default function Plots({
   wy_id,
   embedded,
 }: {

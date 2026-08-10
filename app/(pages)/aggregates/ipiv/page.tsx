@@ -1,5 +1,5 @@
-import IpivPivotTable from "@/components/panels/Aggregates/IpivPivotTable";
+import IpivTable from "@/components/panels/Aggregates/IpivTable";
 
 export default function IpivPage() {
-  return <IpivPivotTable />;
+  return <IpivTable />;
 }

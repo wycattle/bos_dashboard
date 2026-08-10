@@ -1,3 +1,4 @@
+/** components/panels/Cow/tables/cow_panel_tables.tsx*/
 "use client";
 import React, { Suspense } from "react";
 import IuMergePanel from "./iu_merge";
