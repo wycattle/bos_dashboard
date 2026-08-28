@@ -1,6 +1,11 @@
+/** components/panels/Aggregates/FulldayTable.tsx */
 "use client";
+
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { SortableTh } from "@/utils/SortableTh";
+import { PanelHeader } from "../../shared/PanelHeader";
+import { DownloadXlsxButton } from "../../shared/DownloadXlsxButton";
+import * as styles from "../../shared/tableStyles";
 
 interface FulldayRow {
   date: string;
@@ -14,10 +19,10 @@ export default function FulldayTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<string>("date");
-  const [sortDir, setSortDir] = useState<SortDir>("desc");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
 
   useEffect(() => {
-    fetch("/api/fullday")
+    fetch("/api/aggregates/fullday")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -44,7 +49,6 @@ export default function FulldayTable() {
     [sortKey],
   );
 
-  // Collect all wy_ids across every row, sorted numerically
   const wy_ids = useMemo(() => {
     const idSet = new Set<string>();
     rows.forEach((row) => {
@@ -77,10 +81,14 @@ export default function FulldayTable() {
     );
 
   return (
-    <div style={{ overflowX: "auto", overflowY: "auto", height: "100%" }}>
-      <h2 style={{ margin: "0 0 0.5rem 0", fontSize: "1rem" }}>
-        Full-Day Milk Records
-      </h2>
+    <div style={{ flex: 1, minWidth: 0 }}>
+      <PanelHeader title="Full-Day Milk Records">
+        <DownloadXlsxButton
+          rows={rows}
+          filename="fullday_records.xlsx"
+          sheetName="fullday"
+        />
+      </PanelHeader>
       <table className="data-table">
         <thead>
           <tr>
@@ -106,7 +114,9 @@ export default function FulldayTable() {
         <tbody>
           {sorted.map((row, i) => (
             <tr key={i}>
-              <td style={{ textAlign: "center" }}>{String(row.date).slice(0, 10)}</td>
+              <td style={{ textAlign: "center" }}>
+                {String(row.date).slice(0, 10)}
+              </td>
               {wy_ids.map((id) => (
                 <td key={id} style={{ textAlign: "right" }}>
                   {row.data?.[id] != null

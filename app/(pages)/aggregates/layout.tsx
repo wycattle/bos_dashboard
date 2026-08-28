@@ -1,3 +1,4 @@
+/** app/(pages)/aggregates/layout.tsx */
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -16,28 +17,9 @@ export default function AggregatesLayout({ children }: { children: React.ReactNo
         <button className="tab-button" onClick={() => router.push("/")}>
           ⌂ Home
         </button>
-
-        <button
-          className={`tab-button${pathname === "/aggregates/allx" ? " active" : ""}`}
-          onClick={() => router.push("/aggregates/allx")}
-        >
-          Allx
+        <button className="tab-button" onClick={() => router.push("/aggregates")}>
+          ↑ Aggregates
         </button>
-
-        <button
-          className={`tab-button${pathname === "/aggregates/ultrasound" ? " active" : ""}`}
-          onClick={() => router.push("/aggregates/ultrasound")}
-        >
-          Ultrasound
-        </button>
-
-        <button
-          className={`tab-button${pathname === "/aggregates/ipiv" ? " active" : ""}`}
-          onClick={() => router.push("/aggregates/ipiv")}
-        >
-          Ipiv
-        </button>
-
 
       </div>
       <div style={{ overflow: "auto", height: "100%" }}>{children}</div>

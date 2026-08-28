@@ -1,3 +1,4 @@
+/**components/shared/tableStyles.ts */
 import type { CSSProperties } from "react";
 
 
