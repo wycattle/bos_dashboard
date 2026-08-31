@@ -7,6 +7,8 @@ import IpivTable       from "../IpivTable";
 import UltrasoundTable from "../UltrasoundTable";
 import FulldayTable    from "../FulldayTable";
 import NetRevenueTable from "../NetRevenueTable";
+import CostXFeedTable  from "../CostXFeedTable";
+
 
 export default function AggregatesTables() {
   const pathname = usePathname();
@@ -17,6 +19,7 @@ export default function AggregatesTables() {
     case "/aggregates/ultrasound":  return <UltrasoundTable />;
     case "/aggregates/fullday":     return <FulldayTable />;
     case "/aggregates/net-revenue": return <NetRevenueTable />;
+    case "/aggregates/cost-x-feed": return < CostXFeedTable/>;
     default:                        return null; // Tables landing page: show only tab buttons
   }
 }

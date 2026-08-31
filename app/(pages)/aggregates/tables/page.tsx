@@ -17,30 +17,44 @@ export default function AggregatesTablesPage() {
         >
           Allx
         </button>
+
         <button
           className={`tab-button${pathname === "/aggregates/ultrasound" ? " active" : ""}`}
           onClick={() => router.push("/aggregates/ultrasound")}
         >
           Ultrasound
         </button>
+
         <button
           className={`tab-button${pathname === "/aggregates/ipiv" ? " active" : ""}`}
           onClick={() => router.push("/aggregates/ipiv")}
         >
           Ipiv
         </button>
+
         <button
           className={`tab-button${pathname === "/aggregates/fullday" ? " active" : ""}`}
           onClick={() => router.push("/aggregates/fullday")}
         >
           Fullday
         </button>
+
         <button
           className={`tab-button${pathname === "/aggregates/net_revenue" ? " active" : ""}`}
           onClick={() => router.push("/aggregates/net_revenue")}
         >
           Net Revenue
         </button>
+
+        <button
+          className={`tab-button${pathname === "/aggregates/cost_x_feed" ? " active" : ""}`}
+          onClick={() => router.push("/aggregates/cost_x_feed")}
+        >
+          Cost X Feed
+        </button>
+
+
+
       </div>
 
       <Tables />

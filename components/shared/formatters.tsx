@@ -30,3 +30,10 @@ export const formatDate = (v: string | undefined): string => {
   if (!v) return "—";
   return String(v).slice(0, 10);
 };
+
+export const formatNum = (v: string | number | undefined): string => {
+  if (v === undefined || v === "") return "—";
+  const n = Number(v);
+  if (Number.isNaN(n)) return "—";
+  return n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+};
