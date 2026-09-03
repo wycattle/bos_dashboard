@@ -1,3 +1,4 @@
+/** components/panels/Daily/TendayTable.tsx */
 "use client";
 import React, { useEffect, useState } from "react";
 import { PanelHeader } from "../../shared/PanelHeader";
@@ -67,10 +68,6 @@ export default function TendayTable() {
   // Extract date cols from first row, sorted
   const dateCols = Object.keys(rows[0]).filter(isDateCol).sort();
 
-  // Separate last row (totals) from data rows — totals never sorts with the rest
-  const dataRows = rows.slice(0, -1);
-  const totalRow = rows[rows.length - 1];
-
   const handleSort = (col: string) => {
     if (sortCol === col) {
       setSortDir(sortDir === "asc" ? "desc" : "asc");
@@ -80,7 +77,7 @@ export default function TendayTable() {
     }
   };
 
-  const sortedRows = [...dataRows].sort((a, b) => {
+  const sortedRows = [...rows].sort((a, b) => {
     const av = parseFloat(a[sortCol]);
     const bv = parseFloat(b[sortCol]);
     const aVal = Number.isNaN(av) ? -Infinity : av;
@@ -143,24 +140,10 @@ export default function TendayTable() {
               ))}
               <td style={styles.tdSeparator}>{formatAvg(row["avg"])}</td>
               <td style={{ ...styles.td, ...getPctChgStyle(row["pct chg from avg"]) }}>
-  {formatPct(row["pct chg from avg"])}
-</td>
+                {formatPct(row["pct chg from avg"])}
+              </td>
             </tr>
           ))}
-          <tr
-            style={{ fontWeight: "bold", borderTop: "2px solid var(--surface-border)" }}
-          >
-            <td style={styles.td}>—</td>
-            {dateCols.map((d) => (
-              <td key={d} style={styles.tdDate}>
-                {totalRow[d] || "—"}
-              </td>
-            ))}
-            <td colSpan={4} style={styles.tdF}>
-              {formatPct(totalRow["pct chg from avg"])}
-            </td>
-            <td></td>
-          </tr>
         </tbody>
       </table>
     </div>
