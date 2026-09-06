@@ -29,8 +29,10 @@ export const th: CSSProperties = {  //'normal ' headers
   padding: "",
   lineHeight: 1.1,
   verticalAlign: "middle",
+  whiteSpace: "normal", // allows text wrapping  
   backgroundColor: "var(--bg)",
   color: "var(--text)",
+
 
 };
 
@@ -78,7 +80,7 @@ export const tdc: CSSProperties = { //table data - centered
 // Optional: wider date cell for expected bdate
 export const tdDateWide: CSSProperties = {
   ...tdDate,
-  minWidth: "70px",
+  minWidth: "80px",
   padding: "1px 1px ",
   textAlign: "center",
   backgroundColor: "var(--bg)",

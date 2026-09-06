@@ -53,6 +53,13 @@ export default function AggregatesTablesPage() {
           Cost X Feed
         </button>
 
+        <button
+          className={`tab-button${pathname === "/aggregates/wy_cp_diff" ? " active" : ""}`}
+          onClick={() => router.push("/aggregates/wy_cp_diff")}
+        >
+          WY-CP diff
+        </button>        
+
 
 
       </div>

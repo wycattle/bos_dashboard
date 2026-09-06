@@ -8,6 +8,7 @@ import UltrasoundTable from "../UltrasoundTable";
 import FulldayTable    from "../FulldayTable";
 import NetRevenueTable from "../NetRevenueTable";
 import CostXFeedTable  from "../CostXFeedTable";
+import WyCpDiffTable   from "../WyCpDiffTable";
 
 
 export default function AggregatesTables() {
@@ -20,6 +21,7 @@ export default function AggregatesTables() {
     case "/aggregates/fullday":     return <FulldayTable />;
     case "/aggregates/net-revenue": return <NetRevenueTable />;
     case "/aggregates/cost-x-feed": return < CostXFeedTable/>;
+    case "/aggregates/WyCpDiffTable":return <WyCpDiffTable/>;
     default:                        return null; // Tables landing page: show only tab buttons
   }
 }
