@@ -21,7 +21,7 @@ export default function GroupsTable() {
   const [sortDir, setSortDir] = useState<SortDirection>("desc");
 
   useEffect(() => {
-    fetch("/api/groups")
+    fetch("/api/daily/groups")
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();

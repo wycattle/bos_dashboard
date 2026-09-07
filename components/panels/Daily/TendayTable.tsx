@@ -43,7 +43,7 @@ export default function TendayTable() {
   const [sortDir, setSortDir] = useState<SortDirection>("asc");
 
   useEffect(() => {
-    fetch("/api/tenday")
+    fetch("/api/daily/tenday")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();

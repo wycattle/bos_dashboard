@@ -14,7 +14,7 @@ export default function HalfdayTable() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/halfday")
+    fetch("/api/daily/halfday")
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();
