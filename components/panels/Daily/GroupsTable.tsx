@@ -12,6 +12,7 @@ interface DynamicRow {
 type SortDirection = "asc" | "desc";
 
 const numericColumns = new Set(["wy_id", "avg", "days_milking"]);
+const AVG_THRESHOLD = 15.0;
 
 export default function GroupsTable() {
   const [rows, setRows] = useState<DynamicRow[]>([]);
@@ -99,16 +100,26 @@ export default function GroupsTable() {
           </tr>
         </thead>
         <tbody>
-          {sortedRows.map((row, i) => (
-            <tr key={i}>
-              <td style={styles.td}>{row.group_name || "—"}</td>
-              <td style={styles.td}>{row.wy_id || "—"}</td>
-              <td style={styles.tdSeparator}>{formatAvg(row.avg)}</td>
-              <td style={styles.td}>{row.days_milking || "—"}</td>
-              <td style={styles.td}>{row.u_read || "—"}</td>
-              <td style={styles.tdDateWide}>{formatDate(row.expected_bdate)}</td>
-            </tr>
-          ))}
+          {sortedRows.map((row, i) => {
+            const avgVal = parseFloat(row.avg);
+            const avgColor = Number.isNaN(avgVal)
+              ? undefined
+              : avgVal >= AVG_THRESHOLD
+              ? "#4ade80"
+              : "#f87171";
+            return (
+              <tr key={i}>
+                <td style={styles.td}>{row.group_name || "—"}</td>
+                <td style={styles.td}>{row.wy_id || "—"}</td>
+                <td style={{ ...styles.tdSeparator, color: avgColor }}>
+                  {formatAvg(row.avg)}
+                </td>
+                <td style={styles.td}>{row.days_milking || "—"}</td>
+                <td style={styles.td}>{row.u_read || "—"}</td>
+                <td style={styles.tdDateWide}>{formatDate(row.expected_bdate)}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
