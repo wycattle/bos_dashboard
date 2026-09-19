@@ -100,6 +100,13 @@ useEffect(() => {
               sortDir={sortDir}
               onSort={handleSort}
             />
+            <SortableTh
+              colKey="lact_num"
+              label="Lact"
+              sortKey={sortKey}
+              sortDir={sortDir}
+              onSort={handleSort}
+            />            
             {lactCols.map((col) => (
               <th key={col}>Try {col}</th>
             ))}
@@ -111,6 +118,7 @@ useEffect(() => {
               {cell(row.wy_id)}
               {cell(row.u_read)}
               {cell(row.days_milking)}
+              {cell(row.lact_num)}
               {lactCols.map((col) => (
                 <td key={col} style={{ textAlign: "center" }}>{formatDate(row[col])}</td>
               ))}

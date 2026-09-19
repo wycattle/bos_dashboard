@@ -70,6 +70,14 @@ export default function GroupsTable() {
       </p>
     );
 
+  const GROUP_LABELS: Record<string, string> = {
+    sick: "ฉิทยา",
+  };
+
+  function displayGroupName(name: string): string {
+  return GROUP_LABELS[name] ?? name;
+  }
+
   const columns: { key: string; label: string; style: React.CSSProperties }[] = [
     { key: "group_name", label: "group", style: styles.th },
     { key: "wy_id", label: "wy_id", style: styles.th },
@@ -109,7 +117,7 @@ export default function GroupsTable() {
               : "#f87171";
             return (
               <tr key={i}>
-                <td style={styles.td}>{row.group_name || "—"}</td>
+                <td style={styles.td}>{displayGroupName(row.group_name) || "—"}</td>
                 <td style={styles.td}>{row.wy_id || "—"}</td>
                 <td style={{ ...styles.tdSeparator, color: avgColor }}>
                   {formatAvg(row.avg)}
