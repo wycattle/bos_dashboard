@@ -14,7 +14,6 @@ interface IpivRow {
 }
 
 const isLactCol = (k: string) => /^\d+$/.test(k);
-
 type SortKey = keyof IpivRow;
 type SortDir = "asc" | "desc";
 
