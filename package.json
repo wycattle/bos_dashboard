@@ -9,7 +9,6 @@
     "lint": "eslint",
     "dev:all": "DATABASE_URL=$(secret-tool lookup service neon-db key conn_string) concurrently \"cd ../../bos && python server.py\" \"next dev\""
   },
-
   "engines": {
     "node": ">=20.19.0"
   },
@@ -17,13 +16,13 @@
     "@aws-sdk/client-s3": "^3.1091.0",
     "@aws-sdk/s3-request-presigner": "^3.1091.0",
     "@neondatabase/serverless": "^1.1.0",
-    "next": "^15.5.19",
+    "next": "^16.3.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-grid-layout": "^2.2.3",
     "swr": "^2.4.1",
     "tree": "^0.1.3",
-    "xlsx": "^0.18.5"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "@types/node": "^24",
@@ -35,5 +34,8 @@
     "eslint-config-next": "^16.2.1",
     "postcss": "^8.5.10",
     "typescript": "^5"
+  },
+  "allowScripts": {
+    "unrs-resolver@1.12.2": true
   }
 }
