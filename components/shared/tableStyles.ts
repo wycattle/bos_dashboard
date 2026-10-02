@@ -1,131 +1,201 @@
-/**components/shared/tableStyles.ts */
+/** components/shared/tableStyles.ts */
 import type { CSSProperties } from "react";
 
+/* ------------------------------------------------------------------ *
+ * Tokens — every value below routes through these.
+ * Declared in app/globals.css:
+ *   --background  --foreground  --surface  --surface-strong
+ *   --surface-border  --table-header  --table-row  --table-row-alt
+ *   --accent  --accent-foreground  --muted-foreground
+ * Rule: no hard-coded colours in this file. Add a token instead.
+ * ------------------------------------------------------------------ */
+const TEXT = "var(--foreground)";
+const SURFACE = "var(--surface)";
+const BORDER = "var(--surface-border)";
+const ROW = "var(--table-row)";
+const ROW_ALT = "var(--table-row-alt)";
+const ROW_HOVER = "var(--surface-strong)";
+const HEADER_BG = "var(--table-header)";
 
-export const thDate: CSSProperties = {  //headers that are dates
-  textAlign: "right",
-  fontSize: "0.6rem",
-  padding: "1px 2px",
-  whiteSpace: "nowrap",
-  lineHeight: 1.1,
-  verticalAlign: "middle",  
-  backgroundColor: "var(--bg)",
-  color: "var(--text)",
-};
+/* Shared geometry — retune cell density in one place. */
+const PAD_XS = "1px 2px";
+const PAD_SM = "1px 4px";
+const SIZE_XS = "0.6rem";
+const SIZE_SM = "0.7rem";
+const SIZE_MD = "0.75rem";
+const SIZE_DATE = "0.72rem";
 
-export const thF: CSSProperties = { //headers 'focus' like 'bold'
-  textAlign: "center",
-  fontSize: "0.75rem",
-  padding: "1px 2px",
-  fontWeight: 700,
-  backgroundColor: "var(--bg)",
-  color: "var(--text)",
-
-};
-
-export const th: CSSProperties = {  //'normal ' headers
-  textAlign: "center",
-  fontSize: "0.7rem",
-  padding: "",
+/* ------------------------------------------------------------------ *
+ * Primitives — the three bases everything else is composed from.
+ * Cells ship with a transparent background so row striping and the
+ * column-band helpers below can paint underneath / over them.
+ * ------------------------------------------------------------------ */
+const cellBase: CSSProperties = {
+  padding: PAD_XS,
   lineHeight: 1.1,
   verticalAlign: "middle",
-  whiteSpace: "normal", // allows text wrapping  
-  backgroundColor: "var(--bg)",
-  color: "var(--text)",
-
-
+  color: TEXT,
 };
 
-export const tdDate: CSSProperties = {  //table data - dates
-  textAlign: "right",
-  fontSize: "0.72rem",
-  padding: "1px 2px",
-  lineHeight: 1.1,
-  backgroundColor: "var(--bg)",
-  color: "var(--text)",
-
+const headBase: CSSProperties = {
+  ...cellBase,
+  fontWeight: 700,
+  whiteSpace: "nowrap",
 };
 
-export const tdF: CSSProperties = { //tabledata - 'bold'
-  textAlign: "center",
-  fontSize: "0.75rem",
-  padding: "1px 2px",
-  minWidth: "30px",  
-  fontWeight: 600,
-  lineHeight: 1.1,
-  backgroundColor: "var(--bg)",
-  color: "var(--text)",
-
-};
-
-export const td: CSSProperties = { //table data - ordinary - right align
-  textAlign: "right",
-  fontSize: "0.7rem",
-  padding: "1px 2px",
+const dataBase: CSSProperties = {
+  ...cellBase,
   minWidth: "30px",
-  backgroundColor: "var(--bg)",
-  color: "var(--text)",
-
+  borderBottom: `1px solid ${BORDER}`,   // horizontal grid line on every data row
 };
 
-export const tdc: CSSProperties = { //table data - centered
+/** Compose style objects left→right; falsy parts are ignored. */
+export const merge = (
+  ...parts: (CSSProperties | false | null | undefined)[]
+): CSSProperties => Object.assign({}, ...parts.filter(Boolean));
+
+/* ------------------------------------------------------------------ *
+ * Headers
+ * ------------------------------------------------------------------ */
+export const th: CSSProperties = {     // normal header, wraps
+  ...headBase,
   textAlign: "center",
-  fontSize: "0.7rem",
-  padding: "1px 2px",
-  backgroundColor: "var(--bg)",
-  color: "var(--text)",
-
+  fontSize: SIZE_SM,
+  whiteSpace: "normal",
+  padding: PAD_SM,
 };
 
-// Optional: wider date cell for expected bdate
-export const tdDateWide: CSSProperties = {
+export const thF: CSSProperties = {    // emphasised header
+  ...th,
+  fontSize: SIZE_MD,
+};
+
+export const thDate: CSSProperties = { // date / narrow numeric header
+  ...headBase,
+  textAlign: "center",
+  fontSize: SIZE_XS,
+  width : "100px",
+};
+
+export const thSeparator: CSSProperties = { // left edge of a column group
+  ...th,
+  borderLeft: `1px solid ${BORDER}`,
+  paddingLeft: "1.25rem",
+  width: "70px",
+};
+
+/* ------------------------------------------------------------------ *
+ * Data cells
+ * ------------------------------------------------------------------ */
+export const td: CSSProperties = {     // ordinary, right-aligned
+  ...dataBase,
+  textAlign: "right",
+  fontSize: SIZE_SM,
+};
+
+export const tdc: CSSProperties = {    // ordinary, centred
+  ...dataBase,
+  textAlign: "center",
+  fontSize: SIZE_SM,
+};
+
+export const tdF: CSSProperties = {    // emphasised value
+  ...dataBase,
+  textAlign: "center",
+  fontSize: SIZE_MD,
+  fontWeight: 600,
+};
+
+export const tdDate: CSSProperties = { // date value
+  ...dataBase,
+  textAlign: "center",
+  fontSize: SIZE_DATE,
+  width: '100px',
+};
+
+export const tdDateWide: CSSProperties = { // wide date value
   ...tdDate,
-  minWidth: "80px",
-  padding: "1px 1px ",
   textAlign: "center",
-  backgroundColor: "var(--bg)",
-  color: "var(--text)",
-
-
+  minWidth: "80px",
 };
 
-export const tableContainer: CSSProperties = {
+export const tdSeparator: CSSProperties = { // left edge of a column group
+  ...td,
+  borderLeft: `1px solid ${BORDER}`,
+  paddingLeft: "1.25rem",
+  textAlign: "center",
+};
+
+/* ------------------------------------------------------------------ *
+ * Table shells
+ * ------------------------------------------------------------------ */
+export const thead: CSSProperties = {
+  background: HEADER_BG,
+};
+
+export const tableBase: CSSProperties = {
+  width: "100%",
+  borderCollapse: "collapse",
+  background: SURFACE,
+  color: TEXT,
+};
+
+/** Default shell: scrollable, rounded, auto width. */
+export const tableWrap: CSSProperties = {
   overflowX: "auto",
   overflowY: "auto",
+  marginTop: "18px",
+  border: `1px solid ${BORDER}`,
+  borderRadius: "12px",
+  background: SURFACE,
+};
+
+/** Full-height variant for panels that own their own scroll area. */
+export const tableContainer: CSSProperties = merge(tableWrap, {
   height: "100%",
   width: "fit-content",
   maxWidth: "100%",
-  border: "1px solid #0aeca8",
   borderRadius: "4px",
   padding: "0.25rem",
-  background: "var(--surface)",
+  marginTop: 0,
   whiteSpace: "normal",
-};
+});
 
-export const tdSeparator: CSSProperties = {
-  ...td,
-  paddingLeft: "1.25rem",
-  borderLeft: "1px solid var(--surface-border)",
-  textAlign: "center",
-};
+/* ------------------------------------------------------------------ *
+ * Banding helpers — inline styles can't express :nth-child / :hover,
+ * so parity and hover are resolved in JS by column or row index.
+ * ------------------------------------------------------------------ */
+export const colBand = (colIndex: number, hovered = false): CSSProperties => ({
+  background: hovered ? ROW_HOVER : colIndex % 2 === 0 ? ROW : ROW_ALT,
+});
 
-export const thSeparator: CSSProperties = {
-  ...th,
-  paddingLeft: "1.25rem",
-  borderLeft: "1px solid var(--surface-border)",
-  whiteSpace: "normal",
-  width: "70px",
-  textAlign: "center",    
-};
+export const rowBand = (rowIndex: number, hovered = false): CSSProperties => ({
+  background: hovered ? ROW_HOVER : rowIndex % 2 === 0 ? ROW : ROW_ALT,
+});
 
+/** Column-banded cell — pass a base cell style for alignment/font. */
+export const colCell = (
+  colIndex: number,
+  hovered = false,
+  base: CSSProperties = td
+): CSSProperties => merge(base, colBand(colIndex, hovered));
 
+/** Column-banded header — pass a base header style. */
+export const colHead = (
+  colIndex: number,
+  base: CSSProperties = th
+): CSSProperties => merge(base, colBand(colIndex));
+
+/* ------------------------------------------------------------------ *
+ * Buttons
+ * ------------------------------------------------------------------ */
 export const navButtonStyle: CSSProperties = {
   padding: "0.5rem 1rem",
   fontSize: "1rem",
   fontWeight: 600,
   background: "var(--accent)",
   color: "var(--accent-foreground)",
-  border: "1px solid var(--surface-border)",
+  border: `1px solid ${BORDER}`,
   borderRadius: "6px",
   cursor: "pointer",
 };

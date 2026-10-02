@@ -30,6 +30,7 @@ export default function CowPanel({ children }: { children?: React.ReactNode }) {
 
   return (
     <div
+      
       style={{
         height: "100%",
         overflow: "hidden",
@@ -42,7 +43,9 @@ export default function CowPanel({ children }: { children?: React.ReactNode }) {
         <button onClick={() => router.push("/")} style={navButtonStyle}>⌂ Home</button>
       </div>
 
-      <div style={{ margin: "5rem auto 1rem", display: "flex", flexDirection: "column", 
+      <div 
+      
+      style={{ margin: "5rem auto 1rem", display: "flex", flexDirection: "column", 
         alignItems: "center", gap: "1rem" }}>
         <InputBox
           inputRef={inputRef}

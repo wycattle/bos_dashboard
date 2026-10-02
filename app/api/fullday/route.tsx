@@ -1,4 +1,4 @@
-/*
+/*  app/api/fullday/route.tsx
  * POST /api/fullday
  *
  *

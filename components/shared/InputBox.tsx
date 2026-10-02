@@ -36,7 +36,7 @@ export default function InputBox({
 
   return (
     <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-      <style>{`
+      <style suppressHydrationWarning>{`
         @keyframes pulseGlow {
           0%, 100% {
             border-color: #52b18e;

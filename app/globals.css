@@ -292,3 +292,50 @@ a:hover {
 .xlsx-button:hover {
   background: #334155; /* pick whatever hover shade you like — bonus you didn't have before */
 }
+
+.dataTableCols {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  color: var(--foreground);
+}
+
+.dataTableCols thead {
+  background: var(--table-header);
+}
+
+.dataTableCols th,
+.dataTableCols td {
+  padding: 5px 5px;
+  border-bottom: 1px solid var(--surface-border);
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.dataTableCols th {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+/* Alternate column shading (vertical stripes) instead of row striping */
+.dataTableCols tbody tr td:nth-child(odd) {
+  background: var(--table-row);
+}
+
+.dataTableCols tbody tr td:nth-child(even) {
+  background: var(--table-row-alt);
+}
+
+.dataTableCols thead tr th:nth-child(odd) {
+  background: var(--table-row);
+}
+
+.dataTableCols thead tr th:nth-child(even) {
+  background: var(--table-row-alt);
+}
+
+/* Hover overrides the column stripes for the whole row */
+.dataTableCols tbody tr:hover td {
+  background: var(--surface-strong);
+}
