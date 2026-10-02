@@ -1,9 +1,12 @@
+// components/panels/Cow/CowPanel.tsx
 "use client";
+import React, { Suspense, useEffect, useRef } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
 import InputBox from "@/components/shared/InputBox";
+import CowPanelTables from "./tables/cow_panel_tables";
+import CowPanelPlots from "./plots/cow_panel_plots";
 
-export default function CowPanel({ children }: { children?: React.ReactNode }) {
+export default function CowPanel() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -22,55 +25,65 @@ export default function CowPanel({ children }: { children?: React.ReactNode }) {
     inputRef.current?.focus();
   };
 
-  const goTo = (path: string) => {
-  const params = new URLSearchParams(searchParams.toString());
-  const query = params.toString();
-  router.push(query ? `${path}?${query}` : path);
-  };
-
   return (
-    <div
-      
-      style={{
-        height: "100%",
-        overflow: "hidden",
-        padding: "2.5rem 0.5rem 0.5rem 0.5rem",
-        position: "relative",
-      }}
-    >
-      <div style={{ position: "absolute", top: "0.5rem", left: "0.5rem", zIndex: 10, display: "flex", gap: "0.5rem" }}>
-        {/* <button onClick={() => router.back()} style={navButtonStyle}>← Back</button> */}
-        <button onClick={() => router.push("/")} style={navButtonStyle}>⌂ Home</button>
+    <div>
+      {/* Home button */}
+      <div
+        style={{
+          position: "absolute",
+          top: "0.5rem",
+          left: "0.5rem",
+          zIndex: 10,
+        }}
+      >
+        <button
+          onClick={() => router.push("/")}
+          style={{
+            padding: "0.3rem 0.7rem",
+            fontSize: "0.8rem",
+            fontWeight: 600,
+            background: "#470332",
+            color: "#f8fafc",
+            border: "1px solid #475569",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+        >
+          ⌂ Home
+        </button>
       </div>
 
-      <div 
-      
-      style={{ margin: "5rem auto 1rem", display: "flex", flexDirection: "column", 
-        alignItems: "center", gap: "1rem" }}>
-        <InputBox
-          inputRef={inputRef}
-          onSubmit={handleSubmit}
-          initialValue={wy_id}
-          placeholder="Enter WY ID"
-        />
-      <div style={{ display: "flex", gap: "3rem" }}>
-        <button onClick={() => goTo("/cow/tables")} style={navButtonStyle}>Tables</button>
-        <button onClick={() => goTo("/cow/plots")} style={navButtonStyle}>Plots</button>
-      </div>
+      {/* Centered input, to the right of the home button */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "2rem",
+        }}
+      >
+        <InputBox onSubmit={handleSubmit} initialValue={wy_id} />
       </div>
 
-      {children}
+      {wy_id && (
+        <div
+          style={{
+            marginTop: "1.5rem",
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: "1.5rem",
+            alignItems: "flex-start",
+          }}
+        >
+          <Suspense fallback={<p>Loading tables...</p>}>
+            <CowPanelTables wy_id={wy_id} embedded />
+          </Suspense>
+          <Suspense fallback={<p>Loading plots...</p>}>
+            <CowPanelPlots wy_id={wy_id} embedded />
+          </Suspense>
+        </div>
+      )}
     </div>
   );
 }
-
-const navButtonStyle: React.CSSProperties = {
-  padding: "0.5rem 1rem",
-  fontSize: "1rem",
-  fontWeight: 600,
-  background: "#1e293b",
-  color: "#f8fafc",
-  border: "1px solid #475569",
-  borderRadius: "6px",
-  cursor: "pointer",
-};

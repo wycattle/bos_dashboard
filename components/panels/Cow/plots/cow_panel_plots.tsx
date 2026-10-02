@@ -2,7 +2,7 @@
 "use client";
 import React, { Suspense } from "react";
 import NetRevenuePlotPanel from "./plot_net_revenue";
-import LactationPlotsPanel from "./plot_lactations";
+import { LactationPlotsPanel } from "./plot_lactations";
 
 export default function Plots({ wy_id, embedded }: { wy_id: string; embedded?: boolean }) {
   return (

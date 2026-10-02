@@ -1,9 +1,10 @@
+/**components/panels/Cow/plots/plot_lactations.tsx */
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import NetRevenuePlotPanel from "./plot_net_revenue";
 
-function LactationPlotsPanel({
+export function LactationPlotsPanel({
   wy_id,
   embedded = false,
 }: {
@@ -103,51 +104,15 @@ export default function Plots({
   wy_id: string;
   embedded?: boolean;
 }) {
-  const [activePlot, setActivePlot] = useState<"net_revenue" | "lactation" | null>(null);
-
-  const buttonStyle = {
-    padding: "0.4rem 0.8rem",
-    marginRight: "0.5rem",
-    marginBottom: "1rem",
-    fontSize: "0.85rem",
-    fontWeight: 600,
-    background: "#1e293b",
-    color: "#f8fafc",
-    border: "1px solid #475569",
-    borderRadius: "6px",
-    cursor: "pointer",
-  };
-
-  const selectedStyle = { ...buttonStyle, background: "#3b82f6" };
-
-  return (
+  
+   return (
     <div style={{ flex: "1 1 620px", maxWidth: "700px" }}>
-      <div>
-        <button
-          onClick={() => setActivePlot("net_revenue")}
-          style={activePlot === "net_revenue" ? selectedStyle : buttonStyle}
-        >
-          Net Revenue Plot
-        </button>
-        <button
-          onClick={() => setActivePlot("lactation")}
-          style={activePlot === "lactation" ? selectedStyle : buttonStyle}
-        >
-          Lactation Plot
-        </button>
-      </div>
-
-      {activePlot === "net_revenue" && (
-        <Suspense fallback={<p>Loading...</p>}>
-          <NetRevenuePlotPanel wy_id={wy_id} embedded={embedded} />
-        </Suspense>
-      )}
-
-      {activePlot === "lactation" && (
-        <Suspense fallback={<p>Loading...</p>}>
-          <LactationPlotsPanel wy_id={wy_id} embedded={embedded} />
-        </Suspense>
-      )}
+      <Suspense fallback={<p>Loading...</p>}>
+        <NetRevenuePlotPanel wy_id={wy_id} embedded={embedded} />
+      </Suspense>
+      <Suspense fallback={<p>Loading...</p>}>
+        <LactationPlotsPanel wy_id={wy_id} embedded={embedded} />
+      </Suspense>
     </div>
   );
 }
