@@ -1,4 +1,4 @@
-/** app/(pages)/aggregates/ultrasound/page.tsx */
+/** app/(pages)/aggregates/tables/insem_related/ultrasound/page.tsx.tsx */
 
 "use client";
 import { Suspense } from "react";

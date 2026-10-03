@@ -9,8 +9,6 @@ export default function AggregatesPage() {
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <button onClick={() => router.push("/aggregates/tables")} style={navButtonStyle}>Tables</button>
-        <button onClick={() => router.push("/aggregates/plots")} style={navButtonStyle}>Plots</button>
       </div>
     </div>
   );

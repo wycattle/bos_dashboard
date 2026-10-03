@@ -97,8 +97,9 @@ export default function LactationTotalsPanel({
   if (rows.length === 0) return <p>No records found for WY ID: {activewy_id}</p>;
 
   return (
-    <div id={id} style={{ padding: embedded ? "0.5rem" : "1rem" }}>
+    <div id="lactation_totals" style={{ padding: embedded ? "0.5rem" : "1rem" }}>
       {!embedded && <h2>Lactation Totals Records for {activewy_id}</h2>}
+      <h3 style={{margin:"0 0 0.5rem"}}>Lactation Days</h3>
       <div style={tableWrap}>
         <table style={tableBase}>
           <thead>

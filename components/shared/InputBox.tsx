@@ -1,6 +1,6 @@
 /** components/shared/InputBox.tsx */
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface InputBoxProps {
   onSubmit: (value: string) => void;
@@ -20,6 +20,14 @@ export default function InputBox({
   inputRef,
 }: InputBoxProps) {
   const [value, setValue] = useState(initialValue);
+
+  const internalRef = useRef<HTMLInputElement>(null);
+  const refToUse = inputRef ?? internalRef;
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => refToUse.current?.focus());
+    return () => cancelAnimationFrame(raf);
+  }, [refToUse]);
 
   const handleSubmit = () => {
     if (value.trim()) onSubmit(value.trim());
@@ -51,7 +59,7 @@ export default function InputBox({
 
       {label && <label>{label}</label>}
       <input
-        ref={inputRef}
+        ref={refToUse}
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -61,7 +69,7 @@ export default function InputBox({
         style={{
           padding: "0.4rem",
           borderRadius: "6px",
-          border: "1px solid #475569",
+          border: "4px solid #475569",
           outline: "none",
           ...(!hasInput && {
             animation: "pulseGlow 1.5s ease-in-out infinite",

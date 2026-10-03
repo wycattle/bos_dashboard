@@ -1,6 +1,6 @@
 // components/panels/Cow/CowPanel.tsx
 "use client";
-import React, { Suspense, useEffect, useRef } from "react";
+import React, { Suspense } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import InputBox from "@/components/shared/InputBox";
 import CowPanelTables from "./tables/cow_panel_tables";
@@ -11,18 +11,13 @@ export default function CowPanel() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const wy_id = searchParams.get("wy_id") ?? "";
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
 
   const handleSubmit = (id: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (id) params.set("wy_id", id);
     else params.delete("wy_id");
     router.push(`${pathname}?${params.toString()}`);
-    inputRef.current?.focus();
   };
 
   return (

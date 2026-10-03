@@ -2,27 +2,43 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 
-
-//layouts wrap pages, they don't replace them:  "wrap" means literally: layout.tsx renders {children} somewhere 
-// //in its JSX, and Next.js substitutes the matching page.tsx's output in place of {children}.
-
+const tabs = [
+  { label: "Feed", href: "/aggregates/feed_related" },
+  { label: "Finance", href: "/aggregates/finance_related" },
+  { label: "Insem", href: "/aggregates/insem_related" },
+  { label: "Milk", href: "/aggregates/milk_related" },
+];
 
 export default function AggregatesLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  return (
-    <div style={{ height: "100vh", overflow: "hidden", position: "relative", padding: "2.5rem 0.5rem 0.5rem 0.5rem" }}>
-      <div style={{ position: "absolute", top: "0.5rem", left: "0.5rem", zIndex: 10, display: "flex", gap: "0.5rem" }}>
-        <button className="tab-button" onClick={() => router.push("/")}>
-          ⌂ Home
-        </button>
-        <button className="tab-button" onClick={() => router.push("/aggregates")}>
-          ↑ Aggregates
-        </button>
+return (
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column", overflow: "hidden", position: "relative" }}>
+      {/* Home: top-left */}
+      <button
+        className="tab-button"
+        style={{ position: "absolute", top: "0.5rem", left: "0.5rem", zIndex: 10 }}
+        onClick={() => router.push("/")}
+      >
+        ⌂ Home
+      </button>
 
+      {/* Category tabs: centered */}
+      <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", padding: "0.5rem" }}>
+        {tabs.map((t) => (
+          <button
+            key={t.href}
+            className={`tab-button${pathname.startsWith(t.href) ? " active" : ""}`}
+            onClick={() => router.push(t.href)}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
-      <div style={{ overflow: "auto", height: "100%" }}>{children}</div>
+
+      {/* Child layouts/pages fill the rest */}
+      <div style={{ flex: 1, minHeight: 0, overflow: "auto" }}>{children}</div>
     </div>
   );
 }
