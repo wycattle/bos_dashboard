@@ -16,6 +16,7 @@ const ROW = "var(--table-row)";
 const ROW_ALT = "var(--table-row-alt)";
 const ROW_HOVER = "var(--surface-strong)";
 const HEADER_BG = "var(--table-header)";
+const WIDTH_YM = "70px";   // "YYYY-MM" — 7 glyphs, fits without truncation
 
 /* Shared geometry — retune cell density in one place. */
 const PAD_XS = "1px 2px";
@@ -77,6 +78,15 @@ export const thDate: CSSProperties = { // date / narrow numeric header
   width : "100px",
 };
 
+export const thDateYM: CSSProperties = {   // year/month header
+  ...headBase,                             // transparent bg, so colHead() can band underneath
+  textAlign: "center",
+  fontSize: SIZE_XS,
+  width: WIDTH_YM,
+  whiteSpace: "nowrap",                    // must override nothing: headBase is already nowrap
+};
+
+
 export const thSeparator: CSSProperties = { // left edge of a column group
   ...th,
   borderLeft: `1px solid ${BORDER}`,
@@ -111,6 +121,14 @@ export const tdDate: CSSProperties = { // date value
   textAlign: "center",
   fontSize: SIZE_DATE,
   width: '100px',
+};
+
+export const tdDateYM: CSSProperties = {   // year/month value
+  ...dataBase,                             // keeps borderBottom grid line + TEXT colour
+  textAlign: "center",
+  fontSize: SIZE_DATE,
+  width: WIDTH_YM,
+  fontVariantNumeric: "tabular-nums",      // stops digit widths from jittering row to row
 };
 
 export const tdDateWide: CSSProperties = { // wide date value

@@ -6,9 +6,14 @@ export async function GET() {
   try {
     const sql = neon(process.env.DATABASE_URL!);
     const rows = await sql`
-      SELECT *
+      SELECT
+        TO_CHAR(datex, 'YYYY-MM') AS datex,   -- plain text, no Date on the wire
+        avg_liters,
+        income,
+        cost,
+        net_revenue
       FROM net_revenue_table_formatted
-      ORDER BY datex ASC
+      ORDER BY datex
     `;
     return NextResponse.json(rows);
   } catch (err) {

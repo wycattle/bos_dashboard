@@ -1,8 +1,10 @@
 /** components/panels/Aggregates/NetRevenueTable.tsx  */
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { PanelHeader } from "../../shared/PanelHeader";
 import { DownloadXlsxButton } from "../../shared/DownloadXlsxButton";
+import { DateCell } from "../../shared/DateCell";
+import { formatNumber } from "../../shared/dateFormat";
 import * as styles from "../../shared/tableStyles";
 import { sortRows } from "@/utils/sortRows";
 import { SortableTh } from "@/utils/SortableTh";
@@ -41,12 +43,6 @@ export default function NetRevenueTable() {
       });
   }, []);
 
-
-  const formatDate = (val: unknown) => {
-    if (val == null) return "—";
-    const d = new Date(val as string);
-    return isNaN(d.getTime()) ? String(val) : d.toLocaleDateString(); // date only, no time
-  };
 
   const formatNumber = (val: unknown) => {
     if (val == null) return "—";
@@ -108,7 +104,7 @@ export default function NetRevenueTable() {
         <tbody>
           {rows.map((row, i) => (
             <tr key={i}>
-              <td style={{ ...styles.td, textAlign: "center" }}>{formatDate(row.datex)}</td>
+               <DateCell value={row.datex} />
               <td style={{ ...styles.td, textAlign: "center" }}>{formatNumber(row.avg_liters)}</td>
               <td style={{ ...styles.td, textAlign: "center" }}>{formatNumber(row.income)}</td>
               <td style={{ ...styles.td, textAlign: "center" }}>{formatNumber(row.cost)}</td>

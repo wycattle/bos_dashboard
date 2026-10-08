@@ -4,8 +4,11 @@ import React, { useEffect, useState, useCallback } from "react";
 import { PanelHeader } from "../../shared/PanelHeader";
 import { DownloadXlsxButton } from "../../shared/DownloadXlsxButton";
 import * as styles from "../../shared/tableStyles";
+import { DateCell } from "../../shared/DateCell";
+import { formatNumber } from "../../shared/dateFormat";
 import { sortRows } from "@/utils/sortRows";
 import { SortableTh } from "@/utils/SortableTh";
+
 
 interface NetIncomeRow {
   datex: string; // DATE from API
@@ -112,7 +115,7 @@ export default function NetIncomeTable() {
         <tbody>
           {rows.map((row, i) => (
             <tr key={i}>
-              <td style={tdc}>{formatDate(row.datex)}</td>
+               <DateCell value={row.datex} style={tdc} />
               <td style={tdc}>{formatNumber(row.avg_liters)}</td>
               <td style={tdc}>{formatNumber(row.income)}</td>
               <td style={tdc}>{formatNumber(row.feed_cost)}</td>
