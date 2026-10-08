@@ -8,6 +8,8 @@ const base = "/aggregates/finance_related";
 const tabs = [
   { label: "cost_x_feed", href: `${base}/cost_x_feed` },
   { label: "net_revenue", href: `${base}/net_revenue` },
+  { label: "net_income" , href: `${base}/net_income` },
+  { label: "net_revenue_sum" , href: `${base}/net_revenue_sum` },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {

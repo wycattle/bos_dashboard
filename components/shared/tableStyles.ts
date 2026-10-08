@@ -153,8 +153,9 @@ export const tableWrap: CSSProperties = {
 /** Full-height variant for panels that own their own scroll area. */
 export const tableContainer: CSSProperties = merge(tableWrap, {
   height: "100%",
-  width: "fit-content",
-  maxWidth: "100%",
+  width: "100%",
+  minWidth: 0,
+  maxWidth: "max-content",
   borderRadius: "4px",
   padding: "0.25rem",
   marginTop: 0,
