@@ -17,7 +17,7 @@ interface WyCpDiffRow {
   heifers_am: number;
   heifers_pm: number;
   heldback_total: number;
-  wy_x_heldback: number;
+  wy_heldback: number;
   wy_minus_cp: number;
 }
 
@@ -97,7 +97,7 @@ export default function WyCpDiffTable() {
             {th("heifers_am", "Heifers AM")}
             {th("heifers_pm", "Heifers PM")}
             {th("heldback_total", "Heldback Total")}
-            {th("wy_x_heldback", "WY-heldback")}
+            {th("wy_heldback", "WY-heldback")}
             {th("cp", "CP")}
             {th("wy_minus_cp", "WY-CP")}
           </tr>
@@ -113,7 +113,7 @@ export default function WyCpDiffTable() {
               <td style={{ ...styles.tdc }}>{formatNum(row.heifers_am)}</td>
               <td style={{ ...styles.tdc }}>{formatNum(row.heifers_pm)}</td>
               <td style={{ ...styles.tdc }}>{formatNum(row.heldback_total)}</td>
-              <td style={{ ...styles.tdc }}>{formatNum(row.wy_x_heldback)}</td>
+              <td style={{ ...styles.tdc }}>{formatNum(row.wy_heldback)}</td>
               <td style={{ ...styles.tdc }}>{formatNum(row.cp)}</td>
               <td style={{ ...styles.tdc }}>{formatNum(row.wy_minus_cp)}</td>
 
