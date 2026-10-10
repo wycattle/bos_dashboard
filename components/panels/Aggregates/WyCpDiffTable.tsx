@@ -5,8 +5,8 @@ import { PanelHeader } from "../../shared/PanelHeader";
 import { DownloadXlsxButton } from "../../shared/DownloadXlsxButton";
 import * as styles from "../../shared/tableStyles";
 import { sortRows } from "@/utils/sortRows";
-import { SortableTh} from "@/utils/SortableTh";
-import { formatDate, formatNum} from "@/components/shared/formatters";
+import { SortableTh } from "@/utils/SortableTh";
+import { formatDate, formatNum } from "@/components/shared/formatters";
 
 interface WyCpDiffRow {
   datex: string;
@@ -29,60 +29,58 @@ export default function WyCpDiffTable() {
   const [sortKey, setSortKey] = useState<SortKey>("datex");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
-    useEffect(() => {
-      fetch("/api/aggregates/wy_cp_diff")
-        .then((res) => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        })
-        .then((data) => {
-          setRows(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setError(err.message);
-          setLoading(false);
-        });
-    }, []);
-  
-    const handleSort = useCallback(
-      (key: SortKey) => {
-        const newDir: SortDir =
-          sortKey === key ? (sortDir === "asc" ? "desc" : "asc") : "desc";
-        setRows((prev) => sortRows(prev, key, newDir));
-        setSortKey(key);
-        setSortDir(newDir);
-      },
-      [sortKey, sortDir],
+  useEffect(() => {
+    fetch("/api/aggregates/wy_cp_diff")
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        setRows(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleSort = useCallback(
+    (key: SortKey) => {
+      const newDir: SortDir =
+        sortKey === key ? (sortDir === "asc" ? "desc" : "asc") : "desc";
+      setRows((prev) => sortRows(prev, key, newDir));
+      setSortKey(key);
+      setSortDir(newDir);
+    },
+    [sortKey, sortDir],
+  );
+
+  const th = (colKey: SortKey, label: string) => (
+    <SortableTh
+      colKey={colKey}
+      label={label}
+      sortKey={sortKey}
+      sortDir={sortDir}
+      onSort={handleSort}
+      style={styles.th}
+    />
+  );
+
+  if (loading) return <p style={{ padding: "1rem" }}>Loading…</p>;
+  if (error)
+    return (
+      <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>
     );
 
-
-    const th = (colKey: SortKey, label: string) => (
-      <SortableTh
-        colKey={colKey}
-        label={label}
-        sortKey={sortKey}
-        sortDir={sortDir}
-        onSort={handleSort}
-        style={styles.th}
-      />
-    );
-  
-    const cell = (val: unknown) => (
-      <td style={{ textAlign: "center" }}>{val != null ? String(val) : "—"}</td>
-    );
-  
-    if (loading) return <p style={{ padding: "1rem" }}>Loading…</p>;
-    if (error)
-      return (
-        <p style={{ padding: "1rem", color: "var(--danger)" }}>Error: {error}</p>
-      );
-
-    
   return (
     <div style={styles.tableContainer}>
       <PanelHeader title="WyCpDiff">
-        <DownloadXlsxButton rows={rows} filename="wy_cp_diff.xlsx" sheetName="sheet_1" />
+        <DownloadXlsxButton
+          rows={rows}
+          filename="wy_cp_diff.xlsx"
+          sheetName="sheet_1"
+        />
       </PanelHeader>
 
       <table className="data-table">
@@ -97,19 +95,23 @@ export default function WyCpDiffTable() {
             {th("cp_actual", "CP actual")}
             {th("wy_minus_cp", "WY-CP")}
           </tr>
-          </thead>
+        </thead>
+
         <tbody>
           {rows.map((row, i) => (
-          <tr key={i}>
-            <td style={{ ...styles.tdDateWide, textAlign: "center" }}>{formatDate(row.datex)}</td>
-            <td style={{ ...styles.tdc }}>{formatNum(row.milkings)}</td>
-            <td style={{ ...styles.tdc }}>{formatNum(row.wy)}</td>
-            <td style={{ ...styles.tdc }}>{formatNum(row.heldback)}</td>
-            <td style={{ ...styles.tdc }}>{formatNum(row.wy_heldback)}</td>
-            <td style={{ ...styles.tdc }}>{formatNum(row.cp_adj)}</td>
-            <td style={{ ...styles.tdc }}>{formatNum(row.cp_actual)}</td>            <td style={{ ...styles.tdc }}>{formatNum(row.wy_minus_cp)}</td>
-          </tr>
-              ))}
+            <tr key={i}>
+              <td style={{ ...styles.tdDateWide, textAlign: "center" }}>
+                {formatDate(row.datex)}
+              </td>
+              <td style={{ ...styles.tdc }}>{formatNum(row.milkings)}</td>
+              <td style={{ ...styles.tdc }}>{formatNum(row.wy)}</td>
+              <td style={{ ...styles.tdc }}>{formatNum(row.heldback)}</td>
+              <td style={{ ...styles.tdc }}>{formatNum(row.wy_heldback)}</td>
+              <td style={{ ...styles.tdc }}>{formatNum(row.cp_adj)}</td>
+              <td style={{ ...styles.tdc }}>{formatNum(row.cp_actual)}</td>
+              <td style={{ ...styles.tdc }}>{formatNum(row.wy_minus_cp)}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
