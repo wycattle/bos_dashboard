@@ -10,14 +10,12 @@ import { formatDate, formatNum} from "@/components/shared/formatters";
 
 interface WyCpDiffRow {
   datex: string;
+  milkings: number;
   wy: number;
-  cp: number;
-  sick_am: number;
-  sick_pm: number;
-  heifers_am: number;
-  heifers_pm: number;
-  heldback_total: number;
+  heldback: number;
   wy_heldback: number;
+  cp_adj: number;
+  cp_actual: number;
   wy_minus_cp: number;
 }
 
@@ -91,35 +89,27 @@ export default function WyCpDiffTable() {
         <thead>
           <tr>
             {th("datex", "Date")}
+            {th("milkings", "Milkings")}
             {th("wy", "WY")}
-            {th("sick_am", "Sick AM")}
-            {th("sick_pm", "Sick PM")}
-            {th("heifers_am", "Heifers AM")}
-            {th("heifers_pm", "Heifers PM")}
-            {th("heldback_total", "Heldback Total")}
+            {th("heldback", "Heldback")}
             {th("wy_heldback", "WY-heldback")}
-            {th("cp", "CP")}
+            {th("cp_adj", "CP adj")}
+            {th("cp_actual", "CP actual")}
             {th("wy_minus_cp", "WY-CP")}
           </tr>
-        </thead>
-
+          </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i}>
-              <td style={{ ...styles.tdDateWide, textAlign: "center" }}>{formatDate(row.datex)}</td>
-              <td style={{ ...styles.tdc }}>{formatNum(row.wy)}</td>
-              <td style={{ ...styles.tdc }}>{formatNum(row.sick_am)}</td>
-              <td style={{ ...styles.tdc }}>{formatNum(row.sick_pm)}</td>
-              <td style={{ ...styles.tdc }}>{formatNum(row.heifers_am)}</td>
-              <td style={{ ...styles.tdc }}>{formatNum(row.heifers_pm)}</td>
-              <td style={{ ...styles.tdc }}>{formatNum(row.heldback_total)}</td>
-              <td style={{ ...styles.tdc }}>{formatNum(row.wy_heldback)}</td>
-              <td style={{ ...styles.tdc }}>{formatNum(row.cp)}</td>
-              <td style={{ ...styles.tdc }}>{formatNum(row.wy_minus_cp)}</td>
-
-
-            </tr>
-          ))}
+          <tr key={i}>
+            <td style={{ ...styles.tdDateWide, textAlign: "center" }}>{formatDate(row.datex)}</td>
+            <td style={{ ...styles.tdc }}>{formatNum(row.milkings)}</td>
+            <td style={{ ...styles.tdc }}>{formatNum(row.wy)}</td>
+            <td style={{ ...styles.tdc }}>{formatNum(row.heldback)}</td>
+            <td style={{ ...styles.tdc }}>{formatNum(row.wy_heldback)}</td>
+            <td style={{ ...styles.tdc }}>{formatNum(row.cp_adj)}</td>
+            <td style={{ ...styles.tdc }}>{formatNum(row.cp_actual)}</td>            <td style={{ ...styles.tdc }}>{formatNum(row.wy_minus_cp)}</td>
+          </tr>
+              ))}
         </tbody>
       </table>
     </div>
